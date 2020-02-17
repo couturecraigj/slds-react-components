@@ -1,0 +1,64 @@
+<aura:component
+  implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+  access="global"
+  controller="meta_fileSelector"
+>
+  <aura:attribute name="name" type="String" default="input" />
+  <aura:attribute name="chunking" type="Boolean" default="false" />
+  <aura:attribute name="required" type="Boolean" default="false" />
+  <aura:attribute name="value" type="Object" />
+  <aura:attribute name="chunkSize" type="Integer" default="1685668" />
+  <aura:attribute name="chunkLimit" type="Integer" default="1685668" />
+  <aura:attribute name="fileSizeLimit" type="Integer" default="1685668" />
+  <aura:attribute name="accept" type="String" />
+  <aura:attribute name="imageDataUrl" type="String" />
+  <aura:attribute name="disabled" type="Boolean" />
+  <aura:attribute name="multiple" type="Boolean" default="false" />
+  <aura:attribute name="label" type="String" />
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+  <div class="slds-form-element">
+    <img aura:id="dataImage" src="{!v.imageDataUrl}" />
+    <span class="slds-form-element__label" id="file-selector-primary-label"
+      >{!v.label}</span
+    >
+    <div class="slds-form-element__control">
+      <div class="slds-file-selector slds-file-selector_files">
+        <div class="slds-file-selector__dropzone">
+          <input
+            type="file"
+            class="slds-file-selector__input slds-assistive-text"
+            accept="{!v.accept}"
+            multiple="{!v.multiple}"
+            disabled="{!v.disabled}"
+            required="{!v.required}"
+            name="{!v.name}"
+            id="{!v.name}"
+            aura:id="file-selector"
+            onchange="{!c.handleFileChange}"
+            aria-labelledby="file-selector-primary-label file-selector-secondary-label"
+          />
+          <label
+            class="slds-file-selector__body"
+            for="{!v.name}"
+            id="file-selector-secondary-label"
+          >
+            <span
+              class="slds-file-selector__button slds-button slds-button_neutral"
+            >
+              <lightning:icon
+                size="x-small"
+                class="slds-button__icon slds-button__icon_left"
+                iconName="utility:upload"
+                alternativeText="Upload Files"
+              />
+              Upload Files
+            </span>
+            <span class="slds-file-selector__text slds-medium-show"
+              >or Drop Files</span
+            >
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</aura:component>

@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="default Application Event Type">
+    <aura:attribute name="details" type="Object" />
+    <aura:attribute name="type" type="String" />
+    <aura:attribute name="from" type="String" />
+</aura:event>

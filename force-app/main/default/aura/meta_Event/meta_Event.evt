@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="This is how we can standardize most of our events">
+    <aura:attribute name="details" type="Object" />
+    <aura:attribute name="type" type="String" />
+</aura:event>
