@@ -26,6 +26,7 @@ const PLUGINS = [
   }),
   babel({
     extensions,
+    runtimeHelpers: true,
     include: ['components/**/*', 'hooks/**/*']
   }),
   localResolve({
