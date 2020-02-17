@@ -1,0 +1,32 @@
+<aura:component
+  implements="force:appHostable,
+flexipage:availableForAllPageTypes,
+flexipage:availableForRecordHome,
+force:hasRecordId,
+forceCommunity:availableForAllPageTypes,
+force:lightningQuickAction"
+  access="global"
+>
+  <aura:registerEvent name="onmessage" type="c:meta_Event" />
+  <aura:registerEvent name="onerror" type="c:meta_Event" />
+  <aura:method name="message" action="{!c.message}">
+    <aura:attribute type="Object" name="payload" />
+  </aura:method>
+  <aura:attribute type="Object" name="timer" />
+  <aura:attribute type="String" name="src" />
+  <aura:attribute type="Boolean" name="ready" default="false" />
+  <aura:attribute type="List" name="messageQueue" />
+  <aura:attribute type="String" name="style" />
+  <aura:attribute type="String" name="class" />
+  <aura:attribute type="String" name="alternativeText" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:unescapedHtml value="{!v.style}"></aura:unescapedHtml>
+  <lightning:container
+    src="{!v.src}"
+    alternativeText="{!v.alternativeText}"
+    class="{!v.class}"
+    onmessage="{!c.onmessage}"
+    onerror="{!c.onerror}"
+    aura:id="lightningContainer"
+  />
+</aura:component>
