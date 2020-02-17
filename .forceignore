@@ -3,6 +3,16 @@
 #
 
 package.xml
+components
+dist
+lib
+hooks
+.storybook
+rollup.config.js
+webpack.config.js
+tsconfig.json
+tslint.json
+.npmignore
 
 # LWC configuration files
 **/jsconfig.json

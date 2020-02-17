@@ -3,6 +3,16 @@ dev
 hooks
 lib
 node_modules
+force-app
+.storybook
+.vscode
+.sfdx
+config
+scripts
+.forceignore
+.prettierignore
+.prettierrc
+.sfdx-project.json
 rollup.config.js
 webpack.config.js
 tslint.json

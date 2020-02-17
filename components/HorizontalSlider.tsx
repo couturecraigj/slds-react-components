@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useField } from "formik";
 
 const HorizontalSlider = ({
   id,
@@ -23,9 +24,17 @@ const HorizontalSlider = ({
   step: number,
   size: string
 }) => {
+  const [field] = useField(name);
   const [value, setValue] = useState<number>(defaultValue);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(+event.currentTarget.value);
+    const value = +event.currentTarget.value
+    setValue(value);
+    field.onChange({target: {name, value}})
+  };
+  const onBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = +event.currentTarget.value
+    setValue(value);
+    field.onBlur({target: {name, value}})
   };
   return (
     <div className="slds-form-element">
@@ -52,6 +61,7 @@ const HorizontalSlider = ({
             step={step}
             className="slds-slider__range"
             value={value}
+            onBlur={onBlur}
             onChange={onChange}
           />
           <span className="slds-slider__value" aria-hidden="true">

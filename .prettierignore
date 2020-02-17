@@ -4,3 +4,6 @@
 
 .sfdx
 .localdevserver
+dist/
+dev/
+lib/
