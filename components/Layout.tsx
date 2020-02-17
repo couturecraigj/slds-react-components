@@ -31,7 +31,7 @@ const Layout = ({
   const [initialized, setInitialized] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
 
-  const postMessage = () => {
+  const postMessage = async () => {
     if (!getSize) return;
     if (!divRef.current) return;
     const windowHeight = getWindowHeight();
@@ -52,18 +52,14 @@ const Layout = ({
       width: divRef.current.offsetWidth
     };
 
-    sendMessage({
-      type: "size",
-      payload: size
-    });
-    if (window.parent)
-      window.parent.postMessage(
-        { type: "size", payload: size },
-        window.location.origin
-      );
-
-    const newTimerId = setTimeout(postMessage, 500);
-    setTimer(newTimerId);
+    sendMessage(
+      {
+        type: "size",
+        payload: size
+      },
+      "height:" + size.height + ";"
+    );
+    setTimeout(postMessage, 200);
   };
   useEffect(() => {
     clearTimeout(timerId);
@@ -80,6 +76,7 @@ const Layout = ({
       window.addEventListener("resize", onResize);
       return () => window.removeEventListener("resize", onResize);
     }
+    return () => {};
   }, [timerId, initialized]);
   return (
     <SizeContext.Provider
@@ -96,14 +93,18 @@ const Layout = ({
           rel="stylesheet"
           href={`${slds}/styles/salesforce-lightning-design-system.min.css`}
         />
-        <style>{white ? `
+        <style>
+          {white
+            ? `
     body, html {
       background: white;
     }
     div .slds-card {
       box-shadow: none;
     }
-      ` : ''}</style>
+      `
+            : ""}
+        </style>
         {children}
       </div>
     </SizeContext.Provider>

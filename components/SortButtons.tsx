@@ -25,7 +25,7 @@ const SortButtons = ({
       {options.map(option => (
         <button
           data-value={option.value}
-          
+          key={option.value}
           onClick={onClick}
           className={"slds-button slds-button_"+ (option.value === selected ? 'neutral' : 'brand')}
         >

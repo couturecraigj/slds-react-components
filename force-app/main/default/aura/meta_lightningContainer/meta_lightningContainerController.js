@@ -16,12 +16,16 @@
             message.payload.height +
             "px !important;}</style>"
         );
+        lightningContainer.message({
+          type: "height:" + message.payload.height + ";"
+        });
       }
       const onmessage = component.getEvent("onmessage");
       onmessage.setParams({
         details: message
       });
       onmessage.fire();
+      const lightningContainer = component.find("lightningContainer");
     } catch (e) {
       console.error(e);
     }
@@ -39,11 +43,9 @@
     if (params) {
       var payload = params.payload;
       if (component.get("v.ready") && !component.get("v.messageQueue").length) {
-        console.log("message");
         const lightningContainer = component.find("lightningContainer");
         lightningContainer.message(payload);
       } else if (!component.get("v.ready")) {
-        console.log("messageQueue");
         const messageQueue = component.get("v.messageQueue");
         messageQueue.push(payload);
         component.set("v.messageQueue", messageQueue);

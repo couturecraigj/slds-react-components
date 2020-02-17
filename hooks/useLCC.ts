@@ -24,6 +24,8 @@ const useLCC = (messageFunction?: (message: any) => any) => {
         resolve();
       }
       LCC.sendMessage(message);
+      if (window.parent)
+        window.parent.postMessage(message, window.location.origin);
     });
 
   return [sendMessage];
