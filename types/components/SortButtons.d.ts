@@ -1,6 +1,9 @@
 /// <reference types="react" />
-declare const SortButtons: ({ options, name, onChange }: {
+declare const SortButtons: ({ options, label, name, id, required, onChange }: {
     onChange: (e: any) => any;
+    required: boolean;
+    label: string;
+    id?: string | undefined;
     name: string;
     options: {
         selected?: boolean | undefined;

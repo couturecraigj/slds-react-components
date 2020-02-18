@@ -9,7 +9,7 @@ const SortButtons = ({
   onChange
 }: {
   onChange: (e: any) => any;
-  required: boolean,
+  required?: boolean;
   label: string;
   id?: string;
   name: string;
@@ -39,7 +39,7 @@ const SortButtons = ({
         meta.error &&
         `slds-has-error`}`}
     >
-    <label className="slds-form-element__label" htmlFor={id}>
+      <label className="slds-form-element__label" htmlFor={id}>
         {required && (
           <abbr className="slds-required" title="required">
             *{" "}
@@ -47,37 +47,37 @@ const SortButtons = ({
         )}
         {label}
       </label>
-    <div className="slds-button-group" role="group">
-      {options.map(option => (
-        <button
-          type="button"
-          data-value={option.value}
-          key={option.value}
-          onClick={onClick}
-          className={
-            "slds-button slds-button_" +
-            (option.value === selected ? "neutral" : "brand")
-          }
-        >
-          {option.label}
-          {option.value === selected && (
-            <svg
-              className="slds-button__icon slds-button__icon_medium"
-              style={{ paddingLeft: "4px" }}
-              aria-hidden="true"
-            >
-              <use
-                xlinkHref={
-                  "./icons/utility-sprite/svg/symbols.svg#" +
-                  (asc ? "chevrondown" : "chevronup")
-                }
-              ></use>
-            </svg>
-          )}
-        </button>
-      ))}
-    </div>
-    {meta.touched && meta.error ? (
+      <div className="slds-button-group" role="group">
+        {options.map(option => (
+          <button
+            type="button"
+            data-value={option.value}
+            key={option.value}
+            onClick={onClick}
+            className={
+              "slds-button slds-button_" +
+              (option.value === selected ? "neutral" : "brand")
+            }
+          >
+            {option.label}
+            {option.value === selected && (
+              <svg
+                className="slds-button__icon slds-button__icon_medium"
+                style={{ paddingLeft: "4px" }}
+                aria-hidden="true"
+              >
+                <use
+                  xlinkHref={
+                    "./icons/utility-sprite/svg/symbols.svg#" +
+                    (asc ? "chevrondown" : "chevronup")
+                  }
+                ></use>
+              </svg>
+            )}
+          </button>
+        ))}
+      </div>
+      {meta.touched && meta.error ? (
         <div className="slds-form-element__help" id={`${name}-form-error`}>
           {meta.error}
         </div>
