@@ -41,7 +41,7 @@ const PLUGINS = [
   filesize()
 ];
 
-const EXTERNAL = ["react", "react-dom", 'formik'];
+const EXTERNAL = ["react", "react-dom", 'formik', 'lightning-container', 'styled-jsx'];
 
 const OUTPUT_DATA = [
   {
