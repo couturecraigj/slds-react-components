@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import LCC from "lightning-container";
 
 const useLCC = (messageFunction?: (message: any) => any) => {
+  console.log(messageFunction);
   useEffect(() => {
     if (messageFunction) {
       LCC.addMessageHandler(messageFunction);
