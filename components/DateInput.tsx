@@ -181,7 +181,6 @@ const DateInput = ({
     {
       month: {
         visible: currentMonth,
-        previous: previousMonth,
         increment: incrementMonth
       },
       year: { choose: chooseYear },

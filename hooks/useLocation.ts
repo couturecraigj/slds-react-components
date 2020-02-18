@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-const useLocation = (): [Position, () => Promise<Position>] => {
-  const [location, setLocation] = useState<Position>();
-  const getLocation = (): Promise<Position> =>
+const useLocation = (): [Position | undefined, () => Promise<Position | undefined>] => {
+  const [location, setLocation] = useState<Position | undefined>();
+  const getLocation = (): Promise<Position | undefined> =>
     typeof window === "object"
       ? new Promise((resolve, reject) => {
           return navigator.geolocation.getCurrentPosition(position => {

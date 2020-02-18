@@ -31,6 +31,7 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 
-lib/
-dist/
-dev/
+/lib/
+/dist
+
+/dev/

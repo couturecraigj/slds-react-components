@@ -1,9 +1,10 @@
 {
   "name": "@moosecouture/slds-react-components",
-  "version": "1.0.14",
+  "version": "1.0.28",
   "main": "dist/slds-react-components.cjs.js",
   "module": "dist/slds-react-components.esm.js",
   "browser": "dist/slds-react-components.iife.js",
+  "types": "./types/main.d.ts",
   "license": "MIT",
   "dependencies": {
     "lightning-container": "^1.0.0",
@@ -15,11 +16,12 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "declarations": "tsc --declaration --outDir lib/ --emitDeclarationOnly --declarationMap",
     "reinstall": "yarn clean && yarn",
     "clean": "rimraf node_modules",
     "start": "webpack-dev-server --mode development --open --hot",
     "build:wp": "cross-env NODE_ENV=production webpack",
-    "build": "npx rollup -c",
+    "build": "yarn declarations && npx rollup -c",
     "storybook": "start-storybook",
     "prepublish": "yarn build"
   },

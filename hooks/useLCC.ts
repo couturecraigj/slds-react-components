@@ -9,9 +9,11 @@ const useLCC = (messageFunction?: (message: any) => any) => {
         LCC.removeMessageHandler(messageFunction);
       };
     }
+    return () => {};
   }, []);
   const sendMessage = (message: any, returnMessageType?: any) =>
     new Promise(resolve => {
+      console.log(message);
       if (returnMessageType) {
         const messageHandler = (message: any) => {
           if (message.type === returnMessageType) {
@@ -20,12 +22,13 @@ const useLCC = (messageFunction?: (message: any) => any) => {
           }
         };
         LCC.addMessageHandler(messageHandler);
-      } else {
-        resolve();
       }
       LCC.sendMessage(message);
       if (window.parent)
         window.parent.postMessage(message, window.location.origin);
+      if (!returnMessageType) {
+        resolve();
+      }
     });
 
   return [sendMessage];

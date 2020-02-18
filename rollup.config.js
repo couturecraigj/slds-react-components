@@ -11,7 +11,7 @@ const extensions = [
   '.js', '.jsx', '.ts', '.tsx',
 ];
 
-const INPUT_FILE_PATH = "components/index";
+const INPUT_FILE_PATH = "main.ts";
 const OUTPUT_NAME = "Example";
 
 const GLOBALS = {
@@ -27,7 +27,7 @@ const PLUGINS = [
   babel({
     extensions,
     runtimeHelpers: true,
-    include: ['components/**/*', 'hooks/**/*']
+    include: ['components/**/*','./main.ts', 'hooks/**/*']
   }),
   localResolve({
     extensions

@@ -26,7 +26,6 @@ const convertOption = (option: OptionType | string) => {
 const DuelingPicklist = ({ options = [], label }: {label: string, options: Array<OptionType | string>}) => {
   const referenceOptions = options.map(convertOption);
   const [selected, setSelected] = useState();
-  const [focused, setFocused] = useState();
   const [chosen, setChosen] = useState<Array<string>>([]);
 
   return (

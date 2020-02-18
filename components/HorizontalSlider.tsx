@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useField } from "formik";
 
 const HorizontalSlider = ({
-  id,
   label,
-  name = "",
+  name = label,
+  id = name,
   startAtMax = false,
   startAtMin = false,
   min = 0,
@@ -13,15 +13,15 @@ const HorizontalSlider = ({
   step = 1,
   size = "full"
 }: {
-  id: string,
+  id?: string,
   label: string,
-  name: string,
-  startAtMax: boolean,
-  startAtMin: boolean,
-  min: number,
-  max: number,
-  defaultValue: number,
-  step: number,
+  name?: string,
+  startAtMax?: boolean,
+  startAtMin?: boolean,
+  min?: number,
+  max?: number,
+  defaultValue?: number,
+  step?: number,
   size: string
 }) => {
   const [field] = useField(name);

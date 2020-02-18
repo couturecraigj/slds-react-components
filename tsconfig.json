@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     // Target latest version of ECMAScript.
-    "target": "esnext",
+    "target": "es5",
+    "declaration": true,
+    "declarationDir": "./types",
+    "declarationMap": true,
     // path to output directory
-    "outDir": "./dist/",
     // enable strict null checks as a best practice
     "strictNullChecks": true,
     // Search under node_modules for non-relative imports.
@@ -11,7 +13,7 @@
     // Process & infer types from .js files.
     "allowJs": true,
     // Don't emit; allow Babel to transform files.
-    "noEmit": true,
+
     // Enable strictest settings like strictNullChecks & noImplicitAny.
     "strict": true,
     // Import non-ES modules as default imports.
@@ -38,5 +40,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true
-  }
+  },
+  "include": ["main.ts"],
+  "exclude": ["node_modules"]
 }

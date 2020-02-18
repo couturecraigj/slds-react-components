@@ -35,9 +35,8 @@ const MultipleCombobox = ({
   id = name,
   placeholder = "Please Select",
   defaultValue = [],
-  defaultDisplay = "",
   options = [],
-  onChange: passedChange = (data: any) => {},
+  onChange: passedChange = () => {},
   readOnly = true,
   required = false
 }: {
@@ -197,8 +196,7 @@ const MultipleCombobox = ({
                                 xlinkHref={
                                   "/icons/utility-sprite/svg/symbols.svg#check"
                                 }
-                                type="utility"
-                                icon="check"
+                                
                               />
                             </span>
                           )}

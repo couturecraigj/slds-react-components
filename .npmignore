@@ -1,7 +1,7 @@
-components
-dev
-hooks
-lib
+/components
+/dev/
+/hooks
+/lib/
 node_modules
 force-app
 .storybook

@@ -2,7 +2,7 @@
 import React, { useContext, useEffect } from "react";
 import Context from "./Context";
 
-const Svg = ({ xlinkHref = "", size = "x-small", type = "", icon = "" }) => {
+const Svg = ({ xlinkHref = "", size = "x-small" }) => {
   const { slds } = useContext(Context);
   useEffect(() => {
     // if (type && icon)

@@ -16,10 +16,4 @@ export { default as SortButtons } from "./SortButtons";
 export { useLCC, getWindowHeight, useLocation } from "../hooks";
 export { default as SubmitButton } from "./SubmitButton";
 export { default as Svg } from "./Svg";
-// export {default as Button} from './Button'
-// export {default as Button} from './Button'
-// export {default as Button} from './Button'
-// export {default as Button} from './Button'
-// export {default as Button} from './Button'
-// export {default as Button} from './Button'
-// export {default as Button} from './Button'
+//# sourceMappingURL=index.d.ts.map

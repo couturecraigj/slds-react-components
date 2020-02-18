@@ -1,3 +1,5 @@
+/// <reference types="react" />
+/// <reference types="formik" />
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 import Svg from "./Svg";
@@ -9,20 +11,20 @@ const Combobox = ({
   defaultValue = "",
   defaultDisplay = "",
   options = [],
-  onChange = (data: any) => {},
+  onChange = () => {},
   readOnly = true,
   required = false
 }: {
-  label: string,
-  name: string,
-  id: string,
-  placeholder: string,
-  defaultValue: string,
-  defaultDisplay: string,
-  options: any[],
-  onChange: (data: any) => any,
-  readOnly: boolean,
-  required: boolean
+  label: string;
+  name: string;
+  id: string;
+  placeholder: string;
+  defaultValue: string;
+  defaultDisplay: string;
+  options: any[];
+  onChange: (data: any) => any;
+  readOnly: boolean;
+  required: boolean;
 }) => {
   const [field, meta] = useField({ name });
   const [focused, setFocused] = useState();
@@ -31,14 +33,11 @@ const Combobox = ({
   const [value, setValue] = useState(defaultValue);
   const [display, setDisplay] = useState(defaultDisplay);
   const onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const {
-      value,
-      display
-    } = event.currentTarget.dataset;
+    const { value, display } = event.currentTarget.dataset;
 
     setFocused(false);
     if (value) setValue(value);
-    setDisplay(!value ? "" : display || '');
+    setDisplay(!value ? "" : display || "");
     onChange(value);
     field.onChange({ target: { name, value: value } });
   };
@@ -157,8 +156,6 @@ const Combobox = ({
                                   xlinkHref={
                                     "/icons/utility-sprite/svg/symbols.svg#check"
                                   }
-                                  type="utility"
-                                  icon="check"
                                 />
                               </span>
                             )}

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import useLCC from "../hooks/useLCC";
 import getWindowHeight from "../hooks/getWindowHeight";
-import SizeContext from "./Context";
+import Context from "./Context";
 import useLocation from "../hooks/useLocation";
 const defaultHeightVariance = { upper: 4, lower: 0 };
 
@@ -26,16 +26,15 @@ const Layout = ({
     // if (event.message.type === "slds") setSlds(event.message.payload);
     if (event.message.type === "icons") console.log(event.message);
   });
-  const [timerId, setTimer] = useState();
 
   const [initialized, setInitialized] = useState(false);
   const divRef = useRef<HTMLDivElement>(null);
 
-  const postMessage = async () => {
+  const changeSize = async () => {
     if (!getSize) return;
     if (!divRef.current) return;
     const windowHeight = getWindowHeight();
-    // const oldTimerId = timerId;
+    
     if (
       windowHeight >=
         divRef.current.offsetHeight +
@@ -51,37 +50,32 @@ const Layout = ({
       height: divRef.current.offsetHeight,
       width: divRef.current.offsetWidth
     };
-
-    sendMessage(
+    return sendMessage(
       {
         type: "size",
         payload: size
       },
       "height:" + size.height + ";"
     );
-    setTimeout(postMessage, 200);
   };
   useEffect(() => {
-    clearTimeout(timerId);
+    console.log({ initialized });
     if (!initialized) {
       setInitialized(true);
-      postMessage();
+      changeSize();
+      return () => {};
     } else {
-      const oldTimerId = timerId;
       const onResize = () => {
-        clearTimeout(oldTimerId);
-        const newTimerId = setTimeout(postMessage, 500);
-        setTimer(newTimerId);
+        return setTimeout(changeSize, 200)
       };
       window.addEventListener("resize", onResize);
       return () => window.removeEventListener("resize", onResize);
     }
-    return () => {};
-  }, [timerId, initialized]);
+  }, [initialized]);
   return (
-    <SizeContext.Provider
+    <Context.Provider
       value={{
-        changeSize: postMessage,
+        changeSize,
         // changeSize: () => {},
         location,
         getLocation,
@@ -107,7 +101,7 @@ const Layout = ({
         </style>
         {children}
       </div>
-    </SizeContext.Provider>
+    </Context.Provider>
   );
 };
 
