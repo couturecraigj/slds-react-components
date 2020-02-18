@@ -90,14 +90,20 @@ const Layout = ({
         <style>
           {white
             ? `
-    body, html {
-      background: white;
-    }
-    div .slds-card {
-      box-shadow: none;
-    }
-      `
-            : ""}
+            body, html {
+              background: white;
+              overflow: hidden;
+            }
+            div .slds-card {
+              box-shadow: none;
+            }
+            `
+            : `
+            body, html {
+              background: transparent;
+              overflow: hidden;
+            }
+            `}
         </style>
         {children}
       </div>
