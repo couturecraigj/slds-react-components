@@ -6,15 +6,15 @@ declare type OptionType = {
 };
 declare const MultipleCombobox: ({ label, name, id, placeholder, defaultValue, options, onChange: passedChange, readOnly, required }: {
     label: string;
-    name: string;
-    id: string;
-    placeholder: string;
-    defaultValue: string[];
-    defaultDisplay: string;
+    name?: string | undefined;
+    id?: string | undefined;
+    placeholder?: string | undefined;
+    defaultValue?: string[] | undefined;
+    defaultDisplay?: string | undefined;
     options: (string | OptionType)[];
-    onChange: (e: any) => any;
-    readOnly: boolean;
-    required: boolean;
+    onChange?: ((e: any) => any) | undefined;
+    readOnly?: boolean | undefined;
+    required?: boolean | undefined;
 }) => JSX.Element;
 export default MultipleCombobox;
 //# sourceMappingURL=MultipleCombobox.d.ts.map

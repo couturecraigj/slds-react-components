@@ -5,9 +5,9 @@ declare const Combobox: ({ label, name, id, placeholder, defaultValue, defaultDi
     id?: string | undefined;
     placeholder?: string | undefined;
     defaultValue?: string | undefined;
-    defaultDisplay: string;
+    defaultDisplay?: string | undefined;
     options: any[];
-    onChange: (data: any) => any;
+    onChange?: ((data: any) => any) | undefined;
     readOnly?: boolean | undefined;
     required?: boolean | undefined;
 }) => JSX.Element;

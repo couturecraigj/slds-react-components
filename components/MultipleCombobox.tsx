@@ -31,7 +31,7 @@ const convertOption = (option: OptionType | string): StrictOptionType => {
 };
 const MultipleCombobox = ({
   label,
-  name,
+  name = label,
   id = name,
   placeholder = "Please Select",
   defaultValue = [],
@@ -41,15 +41,15 @@ const MultipleCombobox = ({
   required = false
 }: {
   label: string;
-  name: string;
-  id: string;
-  placeholder: string;
-  defaultValue: Array<string>;
-  defaultDisplay: string;
+  name?: string;
+  id?: string;
+  placeholder?: string;
+  defaultValue?: Array<string>;
+  defaultDisplay?: string;
   options: Array<OptionType | string>;
-  onChange: (e: any) => any;
-  readOnly: boolean;
-  required: boolean;
+  onChange?: (e: any) => any;
+  readOnly?: boolean;
+  required?: boolean;
 }) => {
   const [field, meta] = useField(name);
   const inputRef = useRef<HTMLInputElement>(null);

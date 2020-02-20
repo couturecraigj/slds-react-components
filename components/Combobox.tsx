@@ -20,9 +20,9 @@ const Combobox = ({
   id?: string;
   placeholder?: string;
   defaultValue?: string;
-  defaultDisplay: string;
+  defaultDisplay?: string;
   options: any[];
-  onChange: (data: any) => any;
+  onChange?: (data: any) => any;
   readOnly?: boolean;
   required?: boolean;
 }) => {
