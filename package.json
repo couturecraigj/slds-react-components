@@ -24,6 +24,7 @@
     "build:wp": "cross-env NODE_ENV=production webpack",
     "build": "yarn declarations && npx rollup -c",
     "storybook": "start-storybook",
+    "preversion": "yarn declarations",
     "prepublish": "yarn build"
   },
   "author": {
