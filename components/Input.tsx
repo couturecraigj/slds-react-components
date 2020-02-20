@@ -4,7 +4,7 @@ import DateInput from "./DateInput";
 const Input = ({
   children = null,
   label,
-  name,
+  name = label,
   id = name,
   type = "text",
   required = false,
@@ -14,12 +14,12 @@ const Input = ({
 }: {
   children?: any;
   label: string;
-  name: string;
-  id: string;
-  type: string;
-  required: boolean;
-  placeholder: string;
-  value: any;
+  name?: string;
+  id?: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  value?: any;
 }) => {
   if (type === "date")
     return <DateInput required={required} name={name} label={label} id={id} />;

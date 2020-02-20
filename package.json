@@ -22,7 +22,7 @@
     "clean": "rimraf node_modules",
     "start": "webpack-dev-server --mode development --open --hot",
     "build:wp": "cross-env NODE_ENV=production webpack",
-    "build": "yarn declarations && npx rollup -c",
+    "build": "npx rollup -c",
     "storybook": "start-storybook",
     "preversion": "yarn declarations",
     "prepublish": "yarn build"
