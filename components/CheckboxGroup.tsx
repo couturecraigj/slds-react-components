@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 
 type OptionType = {
-  label: string,
-  name?: string,
-  value?: boolean,
-  Id?: string
+  label: string;
+  name?: string;
+  value?: boolean;
+  Id?: string;
 };
 
 const CheckboxGroup = ({

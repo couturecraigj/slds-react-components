@@ -1,125 +1,121 @@
-<apex:page title="Flow"
-           standardStylesheets="false"
-           lightningStyleSheets="true"
-           docType="html-5.0"
-           applyHtmlTag="true"
-           applyBodyTag="false"
-           
-           controller="GetParametersString">
-    <head>
-        <title>Flow</title>
-        <apex:slds /> 
-    </head>
-    <apex:includeScript value="/support/console/48.0/integration.js"/>
-    <apex:includeLightning />
-    <div class="slds-scope">
-        <div id="lightning" />
-    </div>
-    
-    <script>
-    if(!JSON.parse('{!parametersString}').flow) throw new Error(
-        'You need to pass a flow through the parameters'
-    )
-    const parameters = Object.entries(
-        JSON.parse('{!parametersString}')
-    ).filter(function(entry) {
-    	if(entry[0].startsWith('sfdc')) return;
-        if(entry[0]===('isdtp')) return;
-        if(entry[0]===('clc')) return;
-        if(entry[0]===('nonce')) return;
-        if(entry[0]===('tour')) return;
-        if(entry[0]===('ltn_app_id')) return;
+<apex:page
+  title="Flow"
+  standardStylesheets="false"
+  lightningStyleSheets="true"
+  docType="html-5.0"
+  applyHtmlTag="true"
+  applyBodyTag="false"
+  controller="GetParametersString"
+>
+  <head>
+    <title>Flow</title>
+    <apex:slds />
+  </head>
+  <apex:includeScript value="/support/console/48.0/integration.js" />
+  <apex:includeLightning />
+  <div class="slds-scope">
+    <div id="lightning" />
+  </div>
+
+  <script type="application/javascript">
+    if (!JSON.parse("{!parametersString}").flow)
+      throw new Error("You need to pass a flow through the parameters");
+    const parameters = Object.entries(JSON.parse("{!parametersString}"))
+      .filter(function(entry) {
+        if (entry[0].startsWith("sfdc")) return;
+        if (entry[0] === "isdtp") return;
+        if (entry[0] === "clc") return;
+        if (entry[0] === "nonce") return;
+        if (entry[0] === "tour") return;
+        if (entry[0] === "ltn_app_id") return;
         return true;
-    }).reduce(
-        function(previous, entry, index){
-            return previous + (index ? '&' : '') + entry[0] + '=' + entry[1]
-        },
-        ''
-    )
-    console.log(
-        parameters
-    )
-    window.addEventListener('popstate', (event) => {
-        console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+      })
+      .reduce(function(previous, entry, index) {
+        return previous + (index ? "&" : "") + entry[0] + "=" + entry[1];
+      }, "");
+    console.log(parameters);
+    window.addEventListener("popstate", event => {
+      console.log(
+        "location: " + document.location + ", state: " + JSON.stringify(event.state)
+      );
     });
-    if ('{!$User.UIThemeDisplayed}'.startsWith('Theme4')){
-    	console.log(
-            parameters
-        )
-        sforce.one.navigateToURL(
-            '/lightning/cmp/c__Flow?c__parameterString=' + encodeURIComponent('{!parametersString}'),
-            true
-        );
-    
-    } else
-        $Lightning.use("c:FlowApp", function() {
-            $Lightning.createComponent(
-                "c:Flow",
-                { parameterString : '{!parametersString}' },
-                "lightning",
-                function(component) {
-                    console.log(component)
-                    
-                    // do some stuff
-                    $A.eventService.addHandler({
-                        "event": "force:navigateToSObject",
-                        "handler" : navigateToSobject
-                    });
-                }
-            );
-        });
-    
-    function navigateToSobject(event) {
-        var recordId = event.getParam("recordId");
-        console.log(recordId)
-        if (recordId === 'back') {
-            
-        	return window.history.back();
-        }
-        if (sforce.console.isInConsole()) {
-            var subtabId = '';
-            sforce.console.getEnclosingTabId(function(result) {
-                subtabId = result.id;
-                console.log('closing tabId '+ subtabId);
-                sforce.one.navigateToSObject(recordId, "detail");
-                setTimeout(function() {
-                	sforce.console.getFocusedPrimaryTabId(function (focusedPrimaryTabResult) {
-                        console.log(focusedPrimaryTabResult);
-                        //Now that we have the primary tab ID, we can close it
-                        var primaryTabId = focusedPrimaryTabResult.id;
-                        
-                        sforce.console.getSubtabIds(primaryTabId, function(subTabsResult) {
-                            
-                            console.log(subTabsResult);
-                            //Display the subtab IDs
-                            console.log('Subtab IDs: ', subTabsResult.ids);
-                            Promise.all(subTabsResult.ids.map(function(id) {
-                                return new Promise(function(resolve){
-                                    sforce.console.getPageInfo(id, function(result) {
-                                        result = JSON.parse(result.pageInfo);
-                                        result.id = id;
-                                        resolve(result);
-                                    })
-                                })
-                            })).then(function(results){
-                                sforce.console.closeTab(subtabId);
-                            })
-                            
-                            
-                        });
-                        
-                    });
-                }, 500)
-                
-                
+    const isClassic = !"{!$User.UIThemeDisplayed}".startsWith("Theme4");
+    if ("{!$User.UIThemeDisplayed}".startsWith("Theme4")) {
+      console.log("sforce.one.navigateToURL");
+      console.log(parameters);
+      sforce.one.navigateToURL(
+        "/lightning/cmp/c__Flow?c__parameterString=" +
+          encodeURIComponent("{!parametersString}") +
+          "&c__isClassic=" +
+          isClassic,
+        true
+      );
+    } else {
+      console.log("Opening App from $Lightning");
+      $Lightning.use("c:FlowApp", function() {
+        $Lightning.createComponent(
+          "c:Flow",
+          { parameterString: "{!parametersString}", isClassic },
+          "lightning",
+          function(component) {
+            console.log(component);
+
+            // do some stuff
+            $A.eventService.addHandler({
+              event: "force:navigateToSObject",
+              handler: navigateToSobject
             });
-        } else if (sforce.one) {
-            sforce.one.navigateToSObject(recordId, "detail");
-        } else {
-            location.replace('/' + recordId)
-        }
-        
-        // 
+          }
+        );
+      });
     }
-    </script>
+    function navigateToSobject(event) {
+      var recordId = event.getParam("recordId");
+      console.log(recordId);
+      if (recordId === "back") {
+        return window.history.back();
+      }
+      if (sforce.console.isInConsole()) {
+        var subtabId = "";
+        sforce.console.getEnclosingTabId(function(result) {
+          subtabId = result.id;
+          console.log("closing tabId " + subtabId);
+          sforce.one.navigateToSObject(recordId, "detail");
+          setTimeout(function() {
+            sforce.console.getFocusedPrimaryTabId(function(
+              focusedPrimaryTabResult
+            ) {
+              console.log(focusedPrimaryTabResult);
+              //Now that we have the primary tab ID, we can close it
+              var primaryTabId = focusedPrimaryTabResult.id;
+
+              sforce.console.getSubtabIds(primaryTabId, function(subTabsResult) {
+                console.log(subTabsResult);
+                //Display the subtab IDs
+                console.log("Subtab IDs: ", subTabsResult.ids);
+                Promise.all(
+                  subTabsResult.ids.map(function(id) {
+                    return new Promise(function(resolve) {
+                      sforce.console.getPageInfo(id, function(result) {
+                        result = JSON.parse(result.pageInfo);
+                        result.id = id;
+                        resolve(result);
+                      });
+                    });
+                  })
+                ).then(function(results) {
+                  sforce.console.closeTab(subtabId);
+                });
+              });
+            });
+          }, 500);
+        });
+      } else if (sforce.one) {
+        sforce.one.navigateToSObject(recordId, "detail");
+      } else {
+        location.replace("/" + recordId);
+      }
+      //
+    }
+  </script>
 </apex:page>

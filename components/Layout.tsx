@@ -22,9 +22,9 @@ const Layout = ({
   const [sendMessage] = useLCC(event => {
     if (!event) return;
     if (!event.message) return;
-    if (event.message.type === "fonts") console.log(event.message);
+    // if (event.message.type === "fonts") console.log(event.message);
     // if (event.message.type === "slds") setSlds(event.message.payload);
-    if (event.message.type === "icons") console.log(event.message);
+    // if (event.message.type === "icons") console.log(event.message);
   });
 
   const [initialized, setInitialized] = useState(false);
@@ -34,7 +34,7 @@ const Layout = ({
     if (!getSize) return;
     if (!divRef.current) return;
     const windowHeight = getWindowHeight();
-    
+
     if (
       windowHeight >=
         divRef.current.offsetHeight +
@@ -59,14 +59,13 @@ const Layout = ({
     );
   };
   useEffect(() => {
-    console.log({ initialized });
     if (!initialized) {
       setInitialized(true);
       changeSize();
       return () => {};
     } else {
       const onResize = () => {
-        return setTimeout(changeSize, 200)
+        return setTimeout(changeSize, 200);
       };
       window.addEventListener("resize", onResize);
       return () => window.removeEventListener("resize", onResize);

@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-const FormGroup = ({ children, label }: {label: string, children: any}) => {
+const FormGroup = ({ children, label }: { label: string; children: any }) => {
   return (
     <div className="slds-form-element">
       <div>

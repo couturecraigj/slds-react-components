@@ -5,6 +5,6 @@
   <aura:attribute name="record" type="String" />
   <aura:attribute name="recordData" type="Object" />
   <aura:attribute name="autoclose" type="Boolean" default="false" />
-  <lightning:workspaceAPI aura:id="workspace"/>
+  <lightning:workspaceAPI aura:id="workspace" />
   <aura:handler name="init" value="{!this}" action="{!c.doinit}" />
 </aura:component>

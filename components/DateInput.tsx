@@ -168,21 +168,18 @@ const DateInput = ({
   value: passedValue = "",
   yearsOptions = []
 }: {
-  label: string,
-  required: boolean,
-  name?: string,
-  id?: string,
-  value?: string,
-  yearsOptions?: number[]
+  label: string;
+  required: boolean;
+  name?: string;
+  id?: string;
+  value?: string;
+  yearsOptions?: number[];
 }) => {
   const [isOpen, setIsOpen] = useState();
   const [field, meta] = useField(name);
   const [
     {
-      month: {
-        visible: currentMonth,
-        increment: incrementMonth
-      },
+      month: { visible: currentMonth, increment: incrementMonth },
       year: { choose: chooseYear },
       selected,
       weeks,
@@ -192,8 +189,8 @@ const DateInput = ({
     setDate
   ] = useCalendar(field.value || passedValue);
   useEffect(() => {
-    if (field.value) setDate(new Date(field.value))
-  }, [field.value])
+    if (field.value) setDate(new Date(field.value));
+  }, [field.value]);
   return (
     <div
       className={`slds-form-element slds-dropdown-trigger slds-dropdown-trigger_click ${isOpen &&
@@ -276,23 +273,27 @@ const DateInput = ({
               </button>
             </div>
           </div>
-          {yearsOptions.length > 0 && <div className="slds-shrink-none">
-            <label className="slds-assistive-text" htmlFor={`${id}-cal`}>
-              Pick a Year
-            </label>
-            <div className="slds-select_container">
-              <select
-                className="slds-select"
-                id={`${id}-cal`}
-                onChange={e => chooseYear(+e.target.value)}
-              >
-                {yearsOptions.map(option => <option>{option}</option>)}
-                <option>2014</option>
-                <option>2015</option>
-                <option>2016</option>
-              </select>
+          {yearsOptions.length > 0 && (
+            <div className="slds-shrink-none">
+              <label className="slds-assistive-text" htmlFor={`${id}-cal`}>
+                Pick a Year
+              </label>
+              <div className="slds-select_container">
+                <select
+                  className="slds-select"
+                  id={`${id}-cal`}
+                  onChange={e => chooseYear(+e.target.value)}
+                >
+                  {yearsOptions.map(option => (
+                    <option>{option}</option>
+                  ))}
+                  <option>2014</option>
+                  <option>2015</option>
+                  <option>2016</option>
+                </select>
+              </div>
             </div>
-          </div>}
+          )}
         </div>
         <table
           aria-labelledby="month"

@@ -1,29 +1,35 @@
 import Svg from "./Svg";
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
 type OptionType = {
-  label: string,
-  value?: string,
-  id?: string
-}
+  label: string;
+  value?: string;
+  id?: string;
+};
 
 const convertOption = (option: OptionType | string) => {
-    let label = "";
-    let value = "";
-    let id = "";
-    if (typeof option === "string") {
-      label = option;
-      value = option;
-      id = option;
-    } else {
-      label = option.label;
-      value = option.value || label;
-      id = option.id || value;
-    }
-    return {label, value, id}
-}
+  let label = "";
+  let value = "";
+  let id = "";
+  if (typeof option === "string") {
+    label = option;
+    value = option;
+    id = option;
+  } else {
+    label = option.label;
+    value = option.value || label;
+    id = option.id || value;
+  }
+  return { label, value, id };
+};
 
-const DuelingPicklist = ({ options = [], label }: {label: string, options: Array<OptionType | string>}) => {
+const DuelingPicklist = ({
+  options = [],
+  label
+}: {
+  label: string;
+  options: Array<OptionType | string>;
+}) => {
   const referenceOptions = options.map(convertOption);
   const [selected, setSelected] = useState();
   const [chosen, setChosen] = useState<Array<string>>([]);
@@ -63,7 +69,7 @@ const DuelingPicklist = ({ options = [], label }: {label: string, options: Array
                 className="slds-listbox slds-listbox_vertical"
                 role="listbox"
               >
-                {referenceOptions.map(({id, value, label}) => {
+                {referenceOptions.map(({ id, value, label }) => {
                   if (chosen.includes(value)) return null;
                   return (
                     <li
@@ -80,7 +86,9 @@ const DuelingPicklist = ({ options = [], label }: {label: string, options: Array
                         tabIndex={0}
                       >
                         <span className="slds-media__body">
-                          <span className="slds-truncate" title={label}>{label}</span>
+                          <span className="slds-truncate" title={label}>
+                            {label}
+                          </span>
                         </span>
                       </div>
                     </li>
@@ -93,7 +101,7 @@ const DuelingPicklist = ({ options = [], label }: {label: string, options: Array
             <button
               className="slds-button slds-button_icon slds-button_icon-container"
               title="Move Selection to Selected"
-              onClick={() => setChosen([...chosen, selected]) }
+              onClick={() => setChosen([...chosen, selected])}
               type="button"
             >
               <Svg xlinkHref="/icons/utility-sprite/svg/symbols.svg#right" />
@@ -104,7 +112,13 @@ const DuelingPicklist = ({ options = [], label }: {label: string, options: Array
             <button
               className="slds-button slds-button_icon slds-button_icon-container"
               type="button"
-              onClick={() => setChosen(chosen.filter(option => convertOption(option).value !== selected))}
+              onClick={() =>
+                setChosen(
+                  chosen.filter(
+                    option => convertOption(option).value !== selected
+                  )
+                )
+              }
               title="Move Selection to Options"
             >
               <Svg xlinkHref="/icons/utility-sprite/svg/symbols.svg#left" />
@@ -125,7 +139,7 @@ const DuelingPicklist = ({ options = [], label }: {label: string, options: Array
                 className="slds-listbox slds-listbox_vertical"
                 role="listbox"
               >
-                {referenceOptions.map(({id, value, label}) => {
+                {referenceOptions.map(({ id, value, label }) => {
                   if (!chosen.includes(value)) return null;
                   return (
                     <li
@@ -142,7 +156,9 @@ const DuelingPicklist = ({ options = [], label }: {label: string, options: Array
                         tabIndex={0}
                       >
                         <span className="slds-media__body">
-                          <span className="slds-truncate" title={label}>{label}</span>
+                          <span className="slds-truncate" title={label}>
+                            {label}
+                          </span>
                         </span>
                       </div>
                     </li>

@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-const useLocation = (): [Position | undefined, () => Promise<Position | undefined>] => {
+const useLocation = (): [
+  Position | undefined,
+  () => Promise<Position | undefined>
+] => {
   const [location, setLocation] = useState<Position | undefined>();
   const getLocation = (): Promise<Position | undefined> =>
     typeof window === "object"

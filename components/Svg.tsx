@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect } from "react";
 import Context from "./Context";
 
@@ -15,7 +14,7 @@ const Svg = ({ xlinkHref = "", size = "x-small" }) => {
     <svg
       className={`slds-icon slds-icon slds-icon_${size} slds-icon-text-default`}
     >
-      <use xlinkHref={slds+xlinkHref} />
+      <use xlinkHref={slds + xlinkHref} />
     </svg>
   );
 };

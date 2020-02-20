@@ -196,7 +196,6 @@ const MultipleCombobox = ({
                                 xlinkHref={
                                   "/icons/utility-sprite/svg/symbols.svg#check"
                                 }
-                                
                               />
                             </span>
                           )}
@@ -215,7 +214,10 @@ const MultipleCombobox = ({
           </div>
         </div>
         {values.length > 0 && (
-          <div className="slds-listbox_selection-group large-group" style={{height: 'auto'}}>
+          <div
+            className="slds-listbox_selection-group large-group"
+            style={{ height: "auto" }}
+          >
             <ul
               className="slds-listbox slds-listbox_horizontal"
               role="listbox"

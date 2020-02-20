@@ -13,28 +13,28 @@ const HorizontalSlider = ({
   step = 1,
   size = "full"
 }: {
-  id?: string,
-  label: string,
-  name?: string,
-  startAtMax?: boolean,
-  startAtMin?: boolean,
-  min?: number,
-  max?: number,
-  defaultValue?: number,
-  step?: number,
-  size: string
+  id?: string;
+  label: string;
+  name?: string;
+  startAtMax?: boolean;
+  startAtMin?: boolean;
+  min?: number;
+  max?: number;
+  defaultValue?: number;
+  step?: number;
+  size: string;
 }) => {
   const [field] = useField(name);
   const [value, setValue] = useState<number>(defaultValue);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = +event.currentTarget.value
+    const value = +event.currentTarget.value;
     setValue(value);
-    field.onChange({target: {name, value}})
+    field.onChange({ target: { name, value } });
   };
   const onBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = +event.currentTarget.value
+    const value = +event.currentTarget.value;
     setValue(value);
-    field.onBlur({target: {name, value}})
+    field.onBlur({ target: { name, value } });
   };
   return (
     <div className="slds-form-element">

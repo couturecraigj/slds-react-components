@@ -16,15 +16,15 @@ const Combobox = ({
   required = false
 }: {
   label: string;
-  name: string;
-  id: string;
-  placeholder: string;
-  defaultValue: string;
+  name?: string;
+  id?: string;
+  placeholder?: string;
+  defaultValue?: string;
   defaultDisplay: string;
   options: any[];
   onChange: (data: any) => any;
-  readOnly: boolean;
-  required: boolean;
+  readOnly?: boolean;
+  required?: boolean;
 }) => {
   const [field, meta] = useField({ name });
   const [focused, setFocused] = useState();
@@ -69,7 +69,6 @@ const Combobox = ({
       (options.find(({ value }) => field.value === value) || {}).label ||
       field.value ||
       "";
-    console.log(display);
     setDisplay(display);
     onChange(field.value);
   }, [field.value]);

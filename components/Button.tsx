@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 type ButtonTypes = "button" | "submit" | "reset";
 const Button = ({
@@ -10,13 +10,13 @@ const Button = ({
   stretch = false,
   onClick
 }: {
-  children?: any,
-  label?: string
-  variant?: string
-  disabled?: boolean
-  stretch?: boolean
+  children?: any;
+  label?: string;
+  variant?: string;
+  disabled?: boolean;
+  stretch?: boolean;
   type?: ButtonTypes;
-  onClick?: (event: any) => any
+  onClick?: (event: any) => any;
 }) => (
   <button
     disabled={disabled}

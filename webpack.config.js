@@ -15,7 +15,7 @@ module.exports = {
     path: ISPROD ? path.resolve("lib") : path.join(__dirname, "/dist"),
     filename: ISPROD ? "index.js" : "bundle.js",
     // globalObject: ISPROD ? 'typeof self !== \'undefined\' ? self : this' : undefined,
-    library: ISPROD ? libraryName : undefined,
+    library: ISPROD ? libraryName : undefined
     // libraryTarget: ISPROD ? "commonjs-module" : undefined
   },
 
@@ -85,22 +85,24 @@ module.exports = {
       template: "./dev/index.html"
     })
   ],
-  externals: ISPROD ? {
-    // react: {
-    //   commonjs: "react",
-    //   commonjs2: "react",
-    //   amd: "React",
-    //   root: "React"
-    // },
-    // "react-dom": {
-    //   commonjs: "react-dom",
-    //   commonjs2: "react-dom",
-    //   amd: "ReactDOM",
-    //   root: "ReactDOM"
-    // },
-    // "formik": {
-    //   commonjs: "formik",
-    //   commonjs2: "formik"
-    // }
-  }: {}
+  externals: ISPROD
+    ? {
+        // react: {
+        //   commonjs: "react",
+        //   commonjs2: "react",
+        //   amd: "React",
+        //   root: "React"
+        // },
+        // "react-dom": {
+        //   commonjs: "react-dom",
+        //   commonjs2: "react-dom",
+        //   amd: "ReactDOM",
+        //   root: "ReactDOM"
+        // },
+        // "formik": {
+        //   commonjs: "formik",
+        //   commonjs2: "formik"
+        // }
+      }
+    : {}
 };

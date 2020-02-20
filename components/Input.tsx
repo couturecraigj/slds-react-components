@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useField } from "formik";
-import DateInput from './DateInput'
+import DateInput from "./DateInput";
 const Input = ({
   children = null,
   label,
@@ -12,16 +12,17 @@ const Input = ({
   value,
   ...props
 }: {
-  children?: any,
-  label: string,
-  name: string,
-  id: string,
-  type: string,
-  required: boolean,
-  placeholder: string,
-  value: any
+  children?: any;
+  label: string;
+  name: string;
+  id: string;
+  type: string;
+  required: boolean;
+  placeholder: string;
+  value: any;
 }) => {
-  if(type === 'date') return <DateInput required={required} name={name} label={label} id={id} />
+  if (type === "date")
+    return <DateInput required={required} name={name} label={label} id={id} />;
   const [field, meta] = useField({ name });
   useEffect(() => {
     return () => {

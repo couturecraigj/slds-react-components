@@ -7,9 +7,7 @@ import autoprefixer from "autoprefixer";
 import localResolve from "rollup-plugin-local-resolve";
 
 import pkg from "./package.json";
-const extensions = [
-  '.js', '.jsx', '.ts', '.tsx',
-];
+const extensions = [".js", ".jsx", ".ts", ".tsx"];
 
 const INPUT_FILE_PATH = "main.ts";
 const OUTPUT_NAME = "Example";
@@ -27,7 +25,7 @@ const PLUGINS = [
   babel({
     extensions,
     runtimeHelpers: true,
-    include: ['components/**/*','./main.ts', 'hooks/**/*']
+    include: ["components/**/*", "./main.ts", "hooks/**/*"]
   }),
   localResolve({
     extensions
@@ -36,12 +34,18 @@ const PLUGINS = [
     browser: true,
     extensions
   }),
-  
+
   commonjs(),
   filesize()
 ];
 
-const EXTERNAL = ["react", "react-dom", 'formik', 'lightning-container', 'styled-jsx'];
+const EXTERNAL = [
+  "react",
+  "react-dom",
+  "formik",
+  "lightning-container",
+  "styled-jsx"
+];
 
 const OUTPUT_DATA = [
   {

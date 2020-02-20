@@ -1,4 +1,4 @@
-const webpackConfig = require('../webpack.config')
+const webpackConfig = require("../webpack.config");
 
 module.exports = {
   stories: ["../components/**/*.stories.[tj]s?(x)"],
@@ -11,10 +11,10 @@ module.exports = {
     // Make whatever fine-grained changes you need
     webpackConfig.module.rules.forEach(rule => {
       config.module.rules.push(rule);
-    })
-    config.resolve.extensions.push('.ts', '.tsx');
+    });
+    config.resolve.extensions.push(".ts", ".tsx");
 
     // Return the altered config
     return config;
-  },
+  }
 };
