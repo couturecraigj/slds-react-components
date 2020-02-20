@@ -7,6 +7,7 @@ const HorizontalSlider = ({
   id = name,
   startAtMax = false,
   startAtMin = false,
+  onChange: passedOnChange = () => {},
   min = 0,
   max = 100,
   defaultValue = startAtMax ? max : startAtMin ? min : (min + max) / 2,
@@ -18,6 +19,7 @@ const HorizontalSlider = ({
   name?: string;
   startAtMax?: boolean;
   startAtMin?: boolean;
+  onChange?: (values?: any) => any;
   min?: number;
   max?: number;
   defaultValue?: number;
@@ -30,6 +32,7 @@ const HorizontalSlider = ({
     const value = +event.currentTarget.value;
     setValue(value);
     field.onChange({ target: { name, value } });
+    passedOnChange(value);
   };
   const onBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = +event.currentTarget.value;
