@@ -26,6 +26,7 @@ const HorizontalSlider = ({
   step?: number;
   size: string;
 }) => {
+  console.log(defaultValue);
   const [field] = useField(name);
   const [value, setValue] = useState<number>(defaultValue);
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +36,7 @@ const HorizontalSlider = ({
     passedOnChange(value);
   };
   useEffect(() => {
-    field.onChange({ target: { name, value } });
+    field.onChange({ target: { name, value: defaultValue || value } });
   }, []);
   const onBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = +event.currentTarget.value;
