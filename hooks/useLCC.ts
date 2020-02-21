@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import LCC from "lightning-container";
 
 const useLCC = (messageFunction?: (message: any) => any) => {
+  const [sentMessages, setSentMessages] = useState([]);
   useEffect(() => {
     if (messageFunction) {
       LCC.addMessageHandler(messageFunction);
@@ -22,9 +23,11 @@ const useLCC = (messageFunction?: (message: any) => any) => {
         };
         LCC.addMessageHandler(messageHandler);
       }
+
       LCC.sendMessage(message);
       if (window.parent)
         window.parent.postMessage(message, window.location.origin);
+      setSentMessages(sentMessages.concat(message));
       if (!returnMessageType) {
         resolve();
       }
