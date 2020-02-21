@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 
 const HorizontalSlider = ({
@@ -34,6 +34,9 @@ const HorizontalSlider = ({
     field.onChange({ target: { name, value } });
     passedOnChange(value);
   };
+  useEffect(() => {
+    field.onChange({ target: { name, value } });
+  }, []);
   const onBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = +event.currentTarget.value;
     setValue(value);
