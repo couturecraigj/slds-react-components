@@ -23,7 +23,7 @@
     "start": "webpack-dev-server --mode development --open --hot",
     "build:wp": "cross-env NODE_ENV=production webpack",
     "build": "npx rollup -c",
-    "storybook": "start-storybook",
+    "storybook": "start-storybook  -s ./components/public",
     "preversion": "yarn declarations",
     "prepublish": "yarn build"
   },
