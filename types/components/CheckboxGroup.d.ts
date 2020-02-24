@@ -5,8 +5,9 @@ declare type OptionType = {
     value?: boolean;
     Id?: string;
 };
-declare const CheckboxGroup: ({ options, name, onChange: onFieldChange, label }: {
+declare const CheckboxGroup: ({ selectAll, options, name, onChange: onFieldChange, label }: {
     options?: OptionType[] | undefined;
+    selectAll?: boolean | undefined;
     name?: string | undefined;
     onChange?: ((event?: any) => any) | undefined;
     label: string;
