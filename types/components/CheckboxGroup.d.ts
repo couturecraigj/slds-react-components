@@ -10,6 +10,6 @@ declare const CheckboxGroup: ({ options, name, onChange: onFieldChange, label }:
     name?: string | undefined;
     onChange?: ((event?: any) => any) | undefined;
     label: string;
-}) => JSX.Element;
+}) => JSX.Element | null;
 export default CheckboxGroup;
 //# sourceMappingURL=CheckboxGroup.d.ts.map
