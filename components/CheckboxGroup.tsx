@@ -28,8 +28,10 @@ const CheckboxGroup = ({
     const meta = field[1];
     const formikValues: any = formik.values;
     const passOnChange = (options: OptionType[]) => {
-      onFieldChange(options.filter(option => option.value).map(option => option.name))
-    }
+      onFieldChange(
+        options.filter(option => option.value).map(option => option.name)
+      );
+    };
     const [state, setState] = useState<Array<OptionType>>(options);
 
     useEffect(() => {
@@ -40,7 +42,7 @@ const CheckboxGroup = ({
             value: formikValues[name].includes(option.name || option.label)
           }))
         );
-        
+        passOnChange(options);
       }
       if (!formikValues[name]) {
         const options = state
@@ -50,8 +52,8 @@ const CheckboxGroup = ({
           ...formikValues,
           [name]: options
         });
+        passOnChange(state);
       }
-      passOnChange(options)
     }, [formikValues[name]]);
     // useEffect(() => {
     //   if (fieldValue) {
@@ -93,7 +95,7 @@ const CheckboxGroup = ({
               ? true
               : option.value
         }));
-        
+
         setState(newOptions);
         const newState = newOptions
           .filter(({ value }) => value)
@@ -112,9 +114,9 @@ const CheckboxGroup = ({
           }),
           values
         );
-        
+
         formik.setValues(newValues);
-        passOnChange(options)
+        passOnChange(options);
       }
     }, [allSelected]);
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +136,7 @@ const CheckboxGroup = ({
         [e.target.name]: e.target.checked,
         [name]: newValues
       });
-      passOnChange(options)
+      passOnChange(options);
       setAllSelected(newAllSelected);
     };
 
