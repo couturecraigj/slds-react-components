@@ -91,6 +91,7 @@ const CheckboxGroup = ({
               ? true
               : option.value
         }));
+        
         setState(newOptions);
         const newState = newOptions
           .filter(({ value }) => value)
@@ -109,8 +110,9 @@ const CheckboxGroup = ({
           }),
           values
         );
-
+        
         formik.setValues(newValues);
+        onFieldChange(newOptions)
       }
     }, [allSelected]);
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,6 +132,7 @@ const CheckboxGroup = ({
         [e.target.name]: e.target.checked,
         [name]: newValues
       });
+      onFieldChange(newValues)
       setAllSelected(newAllSelected);
     };
 
