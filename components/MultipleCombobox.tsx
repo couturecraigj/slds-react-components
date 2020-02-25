@@ -101,6 +101,7 @@ const MultipleCombobox = ({
   };
   const onBlur = (e: React.FocusEvent<HTMLElement>) => {
     if (left) setFocused(false);
+    console.log("onBlur");
     field.onBlur(e);
   };
   useEffect(() => {
@@ -108,6 +109,7 @@ const MultipleCombobox = ({
       field.onChange({ target: { name, value: [] } });
     };
   }, []);
+  console.log(name, meta);
   return (
     <div
       className={`slds-form-element ${meta.touched &&
