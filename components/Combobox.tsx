@@ -75,7 +75,12 @@ const Combobox = ({
   const noneOption = required ? [] : [{ value: "", label: placeholder }];
 
   return (
-    <div className="slds-form-element" onMouseLeave={onLeave}>
+    <div
+      className={`slds-form-element ${meta.touched &&
+        meta.error &&
+        `slds-has-error`}`}
+      onMouseLeave={onLeave}
+    >
       <label className="slds-form-element__label" htmlFor={id}>
         {required && (
           <abbr className="slds-required" title="required">
@@ -174,6 +179,11 @@ const Combobox = ({
           </div>
         </div>
       </div>
+      {meta.touched && meta.error ? (
+        <div className="slds-form-element__help" id={`${name}-form-error`}>
+          {meta.error}
+        </div>
+      ) : null}
     </div>
   );
 };
