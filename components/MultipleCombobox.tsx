@@ -58,8 +58,8 @@ const MultipleCombobox = ({
   const [hovered, setHovered] = useState();
   const [values, setValues] = useState(defaultValue);
   const onChange = (values: Array<string>) => {
-    passedChange({ target: { name, value: values } });
     field.onChange({ target: { name, value: values } });
+    setTimeout(() => passedChange({ target: { name, value: values } }), 0);
   };
   const onClick = (event: React.MouseEvent<HTMLInputElement>) => {
     if (!inputRef.current) return;
