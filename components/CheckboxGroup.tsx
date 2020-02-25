@@ -23,16 +23,28 @@ const CheckboxGroup = ({
 }) => {
   try {
     const [allSelected, setAllSelected] = useState("none");
+    const [optionList, setOptionList] = useState<string[]>(
+      options
+        .filter(option => option.value)
+        .map(option => option.name || option.label)
+    );
     const formik = useFormikContext();
     let field = useField(name);
     const meta = field[1];
     const formikValues: any = formik.values;
     const passOnChange = (options: OptionType[]) => {
-      onFieldChange(
-        options.filter(option => option.value).map(option => option.name)
-      );
+      const newOptions = options
+        .filter(option => option.value)
+        .map(option => option.name || option.label);
+      setOptionList(newOptions);
+      onFieldChange(newOptions);
     };
-    const [state, setState] = useState<Array<OptionType>>(options);
+    const [state, setState] = useState<Array<OptionType>>(
+      options.map(option => ({
+        ...option,
+        value: optionList.includes(option.name || option.label)
+      }))
+    );
 
     useEffect(() => {
       if (formikValues[name]) {
