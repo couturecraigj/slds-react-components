@@ -38,6 +38,7 @@ const CheckboxGroup = ({
             value: formikValues[name].includes(option.name || option.label)
           }))
         );
+        onFieldChange(options)
       }
       if (!formikValues[name]) {
         const options = state
