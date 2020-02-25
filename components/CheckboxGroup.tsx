@@ -27,7 +27,9 @@ const CheckboxGroup = ({
     let field = useField(name);
     const meta = field[1];
     const formikValues: any = formik.values;
-
+    const passOnChange = (options: OptionType[]) => {
+      onFieldChange(options.filter(option => option.value).map(option => option.name))
+    }
     const [state, setState] = useState<Array<OptionType>>(options);
 
     useEffect(() => {
@@ -38,18 +40,18 @@ const CheckboxGroup = ({
             value: formikValues[name].includes(option.name || option.label)
           }))
         );
-        onFieldChange(options)
+        
       }
       if (!formikValues[name]) {
         const options = state
           .filter(option => option.value)
           .map(option => option.name || option.label);
-        onFieldChange(options)
         formik.setValues({
           ...formikValues,
           [name]: options
         });
       }
+      passOnChange(options)
     }, [formikValues[name]]);
     // useEffect(() => {
     //   if (fieldValue) {
@@ -112,7 +114,7 @@ const CheckboxGroup = ({
         );
         
         formik.setValues(newValues);
-        onFieldChange(newOptions)
+        passOnChange(options)
       }
     }, [allSelected]);
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,7 +134,7 @@ const CheckboxGroup = ({
         [e.target.name]: e.target.checked,
         [name]: newValues
       });
-      onFieldChange(newValues)
+      passOnChange(options)
       setAllSelected(newAllSelected);
     };
 

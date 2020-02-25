@@ -21,6 +21,7 @@ export const withAll = () => (
   <Layout>
     <Formik onSubmit={console.log} initialValues={{ nothing: [] }}>
       <CheckboxGroup
+        onChange={console.log}
         selectAll
         options={[{ label: "something", value: true }, { label: "something else", name: 'somethingElse' }]}
         name="nothing"
