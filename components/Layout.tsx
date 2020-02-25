@@ -28,11 +28,10 @@ const Layout = ({
   });
 
   const [initialized, setInitialized] = useState(false);
-  const [timerOut, setTimerOut] = useState();
+  const [timer, setTimer] = useState(0);
   const divRef = useRef<HTMLDivElement>(null);
 
   const changeSize = () => {
-    clearTimeout(timerOut);
     if (!getSize) return;
     if (!divRef.current) return;
     const windowHeight = getWindowHeight();
@@ -48,12 +47,16 @@ const Layout = ({
       return;
     }
 
-    const size = {
-      height: divRef.current.offsetHeight,
-      width: divRef.current.offsetWidth
-    };
-    setTimerOut(
-      setTimeout(
+    
+    setTimer(timer+1);
+  };
+  useEffect(() => {
+    if (divRef.current) {
+      const size = {
+        height: divRef.current.offsetHeight,
+        width: divRef.current.offsetWidth
+      };
+      const timer = setTimeout(
         () =>
           sendMessage(
             {
@@ -64,8 +67,13 @@ const Layout = ({
           ),
         500
       )
-    );
-  };
+      return () => clearTimeout(timer)
+    } else {
+      changeSize();
+    }
+    return () => {}
+    
+  }, [timer])
   useEffect(() => {
     if (!initialized) {
       setInitialized(true);
