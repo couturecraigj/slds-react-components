@@ -28,13 +28,14 @@ const Layout = ({
   });
 
   const [initialized, setInitialized] = useState(false);
+  const [timerOut, setTimerOut] = useState();
   const divRef = useRef<HTMLDivElement>(null);
 
   const changeSize = async () => {
     if (!getSize) return;
     if (!divRef.current) return;
     const windowHeight = getWindowHeight();
-
+    clearTimeout(timerOut);
     if (
       windowHeight >=
         divRef.current.offsetHeight +
@@ -50,13 +51,13 @@ const Layout = ({
       height: divRef.current.offsetHeight,
       width: divRef.current.offsetWidth
     };
-    return sendMessage(
+    setTimerOut(setTimeout(() => sendMessage(
       {
         type: "size",
         payload: size
       },
       "height:" + size.height + ";"
-    );
+    ), 500));
   };
   useEffect(() => {
     if (!initialized) {
