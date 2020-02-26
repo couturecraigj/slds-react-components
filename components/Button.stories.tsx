@@ -16,6 +16,6 @@ export const withEmoji = () => (
 
 export const withLayout = () => (
   <Layout>
-    <Button>With Layout</Button>
+    <Button variant="brand">With Layout</Button>
   </Layout>
 );

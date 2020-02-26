@@ -5,7 +5,39 @@ import Context from "./Context";
 import useLocation from "../hooks/useLocation";
 const defaultHeightVariance = { upper: 4, lower: 0 };
 const PROD = process.env.NODE_ENV === "production";
-const serviceWorker = PROD ? 'layout-sw.js' : '../layout-sw.js'
+const serviceWorker = PROD ? "layout-sw.js" : "../layout-sw.js";
+
+const useSize = (checkSize: boolean = true): [(e?: any) => any, React.RefObject<HTMLDivElement>] => {
+  const divRef = useRef<HTMLDivElement>(null);
+  if (!checkSize) return [() => {}, divRef];
+
+  const [height, setHeight] = useState(0);
+  const [sendMessage] = useLCC();
+
+  const getSize = () => {
+    const windowHeight = getWindowHeight();
+    if (height === windowHeight) return;
+
+    setHeight(windowHeight);
+  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sendMessage(
+        { type: "size", payload: { height } },
+        "height:" + height + ";"
+      );
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [height]);
+  useEffect(() => {
+    getSize()
+    window.addEventListener("resize", getSize);
+    return () => {
+      window.removeEventListener("resize", getSize);
+    };
+  }, []);
+  return [getSize, divRef];
+};
 
 function registerServiceWorker(): void {
   if ("serviceWorker" in navigator && PROD) {
@@ -36,73 +68,12 @@ const Layout = ({
   heightVariances = { ...defaultHeightVariance, ...heightVariances };
   const slds = ".";
   const [location, getLocation] = useLocation();
-  const [sendMessage] = useLCC(event => {
-    if (!event) return;
-    if (!event.message) return;
-    // if (event.message.type === "fonts") console.log(event.message);
-    // if (event.message.type === "slds") setSlds(event.message.payload);
-    // if (event.message.type === "icons") console.log(event.message);
-  });
 
-  const [initialized, setInitialized] = useState(false);
-  const [timer, setTimer] = useState(0);
-  const divRef = useRef<HTMLDivElement>(null);
-
-  const changeSize = () => {
-    if (!getSize) return;
-    if (!divRef.current) return;
-    const windowHeight = getWindowHeight();
-
-    if (
-      windowHeight >=
-        divRef.current.offsetHeight +
-          (heightVariances.lower < 0
-            ? heightVariances.lower
-            : -heightVariances.lower) &&
-      windowHeight <= divRef.current.offsetHeight + heightVariances.upper
-    ) {
-      return;
-    }
-
-    setTimer(timer + 1);
-  };
-  useEffect(() => {
-    if (divRef.current) {
-      const size = {
-        height: divRef.current.offsetHeight,
-        width: divRef.current.offsetWidth
-      };
-      const timer = setTimeout(
-        () =>
-          sendMessage(
-            {
-              type: "size",
-              payload: size
-            },
-            "height:" + size.height + ";"
-          ),
-        500
-      );
-      return () => clearTimeout(timer);
-    } else {
-      changeSize();
-    }
-    return () => {};
-  }, [timer]);
+  const [changeSize, divRef] = useSize(getSize);
   useEffect(() => {
     registerServiceWorker();
-    if (!initialized) {
-      setInitialized(true);
-      changeSize();
-      return () => {};
-    } else {
-      const onResize = () => {
-        return setTimeout(changeSize, 200);
-      };
-      window.addEventListener("resize", onResize);
-      return () => window.removeEventListener("resize", onResize);
-    }
-  }, [initialized]);
+  }, []);
+
   return (
     <Context.Provider
       value={{
