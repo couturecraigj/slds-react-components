@@ -18,8 +18,11 @@ const useSize = (
 
   const getSize = () => {
     const windowHeight = getWindowHeight();
-    if (height === windowHeight) return;
-    if (height === divRef.current?.offsetHeight) return;
+    if (
+      windowHeight === divRef.current?.offsetHeight &&
+      height === divRef.current?.offsetHeight
+    )
+      return;
     setHeight(divRef.current?.offsetHeight || 0);
   };
   useEffect(() => {
