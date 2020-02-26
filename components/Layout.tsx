@@ -18,6 +18,7 @@ const useSize = (
 
   const getSize = () => {
     const windowHeight = getWindowHeight();
+    console.log(windowHeight, divRef.current?.offsetHeight, height);
     if (
       windowHeight === divRef.current?.offsetHeight &&
       height === divRef.current?.offsetHeight
