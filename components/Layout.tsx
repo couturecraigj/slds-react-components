@@ -17,16 +17,15 @@ const useSize = (
   const [sendMessage] = useLCC();
 
   const getSize = () => {
-    setTimeout(() =>  {
+    setTimeout(() => {
       const windowHeight = getWindowHeight();
-      console.log(windowHeight, divRef.current?.offsetHeight, height);
       if (
         windowHeight === divRef.current?.offsetHeight &&
         height === divRef.current?.offsetHeight
       )
         return;
       setHeight(divRef.current?.offsetHeight || 0);
-    }, 50)
+    }, 50);
   };
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -92,7 +91,7 @@ const Layout = ({
         slds
       }}
     >
-      <div ref={divRef}>
+      <div ref={divRef} style={{ paddingInlineEnd: "1px" }}>
         <link
           rel="stylesheet"
           href={`${slds}/styles/salesforce-lightning-design-system.min.css`}
