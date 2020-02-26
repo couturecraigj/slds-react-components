@@ -11,17 +11,18 @@ const useSize = (checkSize: boolean = true): [(e?: any) => any, React.RefObject<
   const divRef = useRef<HTMLDivElement>(null);
   if (!checkSize) return [() => {}, divRef];
 
-  const [height, setHeight] = useState(0);
+  const [height, setHeight] = useState(1);
   const [sendMessage] = useLCC();
 
   const getSize = () => {
     const windowHeight = getWindowHeight();
     if (height === windowHeight) return;
 
-    setHeight(windowHeight);
+    setHeight(divRef.current?.offsetHeight || 0);
   };
   useEffect(() => {
     const timer = setTimeout(() => {
+      console.log(height)
       sendMessage(
         { type: "size", payload: { height } },
         "height:" + height + ";"
