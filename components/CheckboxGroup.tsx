@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useField, useFormikContext } from "formik";
+import { useField } from "formik";
 
 type OptionType = {
   label: string;
@@ -8,11 +8,138 @@ type OptionType = {
   Id?: string;
 };
 
+const Checkbox = ({
+  Id = "",
+  name = "",
+  checked = false,
+  label,
+  onChange = () => {}
+}: {
+  name: string;
+  Id: string;
+  checked: boolean;
+  label: string;
+  onChange: (e: any) => any;
+}) => {
+  try {
+    const [field] = useField(name);
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      field.onChange(e);
+      onChange(e);
+    };
+    useEffect(() => {
+      field.onChange({ target: { name, value: checked } });
+    }, [checked]);
+    return (
+      <div className="slds-checkbox" key={Id}>
+        <input
+          type="checkbox"
+          id={Id}
+          name={name}
+          checked={checked}
+          {...field}
+          onChange={onInputChange}
+        />
+        <label className="slds-checkbox__label" htmlFor={Id}>
+          <span className="slds-checkbox_faux"></span>
+          <span className="slds-form-element__label">{label}</span>
+        </label>
+      </div>
+    );
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
+const SelectAll = ({
+  children,
+  selectAll,
+  name,
+  label,
+  options = []
+}: {
+  children: (e: any) => any;
+  name: string;
+  label: string;
+  selectAll: boolean;
+  options: OptionType[];
+}) => {
+  const [field, meta] = useField(name);
+  const [state, setState] = useState("some");
+  const [optionList, setOptionList] = useState(
+    options
+      .filter(option => option.value)
+      .map(option => option.name || option.label)
+  );
+
+  const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = options
+      .filter(() => e.target.checked)
+      .map(option => option.name || option.label);
+    setOptionList(value);
+    field.onChange({ target: { name, value } });
+    setState(e.target.checked ? "all" : "none");
+  };
+  const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newOptionList = optionList
+      .concat(e.target.name)
+      .filter(option => (option === e.target.name ? e.target.checked : option));
+    if (newOptionList.length === options.length) setState("all");
+    if (newOptionList.length === 0) setState("none");
+    if (state !== "some") setState("some");
+    setOptionList(newOptionList);
+  };
+  return (
+    <fieldset
+      className={`slds-form-element ${meta.touched &&
+        meta.error &&
+        `slds-has-error`}`}
+    >
+      <legend className="slds-form-element__legend slds-form-element__label">
+        {label}
+      </legend>
+      <div className="slds-form-element__control">
+        {selectAll ? (
+          <>
+            <div className="slds-checkbox">
+              <input
+                type="checkbox"
+                id="select-all"
+                onChange={onSelectAll}
+                checked={state === "all" ? true : false}
+              />
+              <label className="slds-checkbox__label" htmlFor="select-all">
+                <span className="slds-checkbox_faux"></span>
+                <span className="slds-form-element__label">Select All</span>
+              </label>
+            </div>
+            {children({
+              onChange: onCheckboxChange,
+              options: options.map(option => ({
+                ...option,
+                value: optionList.includes(option.name || option.label)
+              }))
+            })}
+          </>
+        ) : (
+          children({
+            onChange: onCheckboxChange,
+            options: options.map(option => ({
+              ...option,
+              value: optionList.includes(option.name || option.label)
+            }))
+          })
+        )}
+      </div>
+    </fieldset>
+  );
+};
+
 const CheckboxGroup = ({
   selectAll = false,
   options = [],
-  name = "",
-  onChange: onFieldChange = () => {},
+  name,
   label = ""
 }: {
   options?: Array<OptionType>;
@@ -22,199 +149,32 @@ const CheckboxGroup = ({
   label: string;
 }) => {
   try {
-    const [allSelected, setAllSelected] = useState("none");
-    const [optionList, setOptionList] = useState<string[]>(
-      options
-        .filter(option => option.value)
-        .map(option => option.name || option.label)
-    );
-    const formik = useFormikContext();
-    const [field, meta] = useField(name);
-    const formikValues: any = formik.values;
-    const passOnChange = (options: OptionType[]) => {
-      const newOptions = options
-        .filter(option => option.value)
-        .map(option => option.name || option.label);
-      setOptionList(newOptions);
-      onFieldChange(newOptions);
-      field.onChange({target: {name, values: newOptions}})
-    };
-    const [state, setState] = useState<Array<OptionType>>(
-      options.map(option => ({
-        ...option,
-        value: optionList.includes(option.name || option.label)
-      }))
-    );
-
-    useEffect(() => {
-      if (formikValues[name]) {
-        const newOptions = options.map(option => ({
-          ...option,
-          value: formikValues[name].includes(option.name || option.label)
-        }))
-        setState(
-          newOptions
-        );
-        formik.setValues({
-          ...formikValues,
-          [name]: newOptions
-        });
-        passOnChange(newOptions);
-      }
-      if (!formikValues[name]) {
-        const options = state
-          .filter(option => option.value)
-          .map(option => option.name || option.label);
-        formik.setValues({
-          ...formikValues,
-          [name]: options
-        });
-      }
-    }, [formikValues[name]]);
-    // useEffect(() => {
-    //   if (fieldValue) {
-    //     const newState = fieldValue.length
-    //       ? options.map(option => ({
-    //           ...option,
-    //           value: fieldValue.includes(option.name || option.label)
-    //         }))
-    //       : options;
-    //     onChange(fieldValue);
-    //     setState(newState);
-    //   }
-    //   return () => {
-    //     onChange(meta.initialValue);
-    //     setState(
-    //       meta.initialValue.length
-    //         ? options.map(option => ({
-    //             ...option,
-    //             value: meta.initialValue.includes(option.name || option.label)
-    //           }))
-    //         : options
-    //     );
-    //   };
-    // }, [fieldValue]);
-
-    const onSelectAll = () => {
-      setAllSelected(allSelected === "all" ? "none" : "all");
-    };
-    useEffect(() => {
-      if (allSelected !== "some") {
-        const formikValues = formik.values;
-        const every = state.every(({ value }) => value);
-        const newOptions = state.map(option => ({
-          ...option,
-          value:
-            allSelected === "none"
-              ? false
-              : allSelected === "all"
-              ? true
-              : option.value
-        }));
-
-        setState(newOptions);
-        const newState = newOptions
-          .filter(({ value }) => value)
-          .map(({ label, name = label }) => name);
-
-        const values = {
-          ...(typeof formikValues === "object" && formikValues !== null
-            ? formikValues
-            : {}),
-          [name]: newState
-        };
-        const newValues = newOptions.reduce<any>(
-          (previous, option) => ({
-            ...previous,
-            [option.name || option.label]: !every
-          }),
-          values
-        );
-
-        formik.setValues(newValues);
-        passOnChange(options);
-      }
-    }, [allSelected]);
-    const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const values: any = formik.values;
-      const newValues = e.target.checked
-        ? values[name].concat(e.target.name)
-        : values[name].filter((name: string) => name !== e.target.name);
-      let newAllSelected =
-        newValues.length === options.length
-          ? "all"
-          : newValues.length === 0
-          ? "none"
-          : "some";
-
-      formik.setValues({
-        ...values,
-        [e.target.name]: e.target.checked,
-        [name]: newValues
-      });
-      passOnChange(options);
-      setAllSelected(newAllSelected);
-    };
-
     return (
-      <fieldset
-        className={`slds-form-element ${meta.touched &&
-          meta.error &&
-          `slds-has-error`}`}
+      <SelectAll
+        label={label}
+        name={name || label}
+        options={options}
+        selectAll={selectAll}
       >
-        <legend className="slds-form-element__legend slds-form-element__label">
-          {label}
-        </legend>
-        {selectAll && (
-          <div className="slds-form-element__control">
-            <div className="slds-checkbox">
-              <input
-                type="checkbox"
-                id="select-all"
-                onChange={onSelectAll}
-                checked={allSelected === "all" ? true : false}
-              />
-              <label className="slds-checkbox__label" htmlFor="select-all">
-                <span className="slds-checkbox_faux"></span>
-                <span className="slds-form-element__label">Select All</span>
-              </label>
-            </div>
-          </div>
-        )}
-
-        <div className="slds-form-element__control">
-          {state.map(({ label, value, name = label, Id = name }) => {
-            try {
-              return (
-                <div className="slds-checkbox" key={Id}>
-                  <input
-                    type="checkbox"
-                    id={Id}
-                    name={name}
-                    checked={value || false}
-                    onChange={onCheckboxChange}
-                  />
-                  <label className="slds-checkbox__label" htmlFor={Id}>
-                    <span className="slds-checkbox_faux"></span>
-                    <span className="slds-form-element__label">{label}</span>
-                  </label>
-                  {meta.touched && meta.error ? (
-                    <div
-                      className="slds-form-element__help"
-                      id={`${name}-form-error`}
-                    >
-                      {meta.error}
-                    </div>
-                  ) : null}
-                </div>
-              );
-            } catch (error) {
-              console.log(error);
-              return null;
-            }
-          })}
-        </div>
-      </fieldset>
+        {({
+          onChange,
+          options
+        }: {
+          onChange: (e: any) => any;
+          options: OptionType[];
+        }) =>
+          options.map(({ label, name = label, Id = name, value = false }) => (
+            <Checkbox
+              checked={value}
+              name={name}
+              key={Id}
+              label={label}
+              Id={Id}
+              onChange={onChange}
+            />
+          ))
+        }
+      </SelectAll>
     );
   } catch (error) {
     console.error(error);
