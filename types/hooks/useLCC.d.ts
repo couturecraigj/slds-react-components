@@ -1,4 +1,4 @@
-declare const useLCC: (messageFunction?: ((message: any) => PromiseLike<{
+declare const useLCC: (messageFunction?: ((message: any) => PromiseLike<void | {
     type: string;
     payload: any;
 }>) | undefined) => ((message: any, returnMessageType?: any) => Promise<unknown>)[];

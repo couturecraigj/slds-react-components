@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import LCC from "lightning-container";
 
-const useLCC = (messageFunction?: (message: any) => PromiseLike<{type: string, payload: any}>) => {
+const useLCC = (messageFunction?: (message: any) => PromiseLike<{type: string, payload: any} | void>) => {
   // const [sentMessages, setSentMessages] = useState([]);
   useEffect(() => {
     if (messageFunction) {
