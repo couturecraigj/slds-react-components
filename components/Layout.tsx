@@ -10,7 +10,7 @@ const serviceWorker = PROD ? 'layout-sw.js' : '../layout-sw.js'
 function registerServiceWorker(): void {
   if ("serviceWorker" in navigator && PROD) {
     navigator.serviceWorker
-      .register(serviceWorker, { scope: location.href })
+      .register(serviceWorker, { scope: location.origin + location.pathname })
       .then(registration =>
         console.log(
           `Service Worker registration complete, scope: '${registration.scope}'`
