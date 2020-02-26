@@ -7,7 +7,9 @@ const defaultHeightVariance = { upper: 4, lower: 0 };
 const PROD = process.env.NODE_ENV === "production";
 const serviceWorker = PROD ? "layout-sw.js" : "../layout-sw.js";
 
-const useSize = (checkSize: boolean = true): [(e?: any) => any, React.RefObject<HTMLDivElement>] => {
+const useSize = (
+  checkSize: boolean = true
+): [(e?: any) => any, React.RefObject<HTMLDivElement>] => {
   const divRef = useRef<HTMLDivElement>(null);
   if (!checkSize) return [() => {}, divRef];
 
@@ -17,21 +19,20 @@ const useSize = (checkSize: boolean = true): [(e?: any) => any, React.RefObject<
   const getSize = () => {
     const windowHeight = getWindowHeight();
     if (height === windowHeight) return;
-
+    if (height === divRef.current?.offsetHeight) return;
     setHeight(divRef.current?.offsetHeight || 0);
   };
   useEffect(() => {
     const timer = setTimeout(() => {
-      console.log(height)
       sendMessage(
         { type: "size", payload: { height } },
         "height:" + height + ";"
-      );
+      ).then(() => getSize());
     }, 200);
     return () => clearTimeout(timer);
   }, [height]);
   useEffect(() => {
-    getSize()
+    getSize();
     window.addEventListener("resize", getSize);
     return () => {
       window.removeEventListener("resize", getSize);

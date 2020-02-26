@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import Button from "./Button";
 import Layout from "./Layout";
+import Context from "./Context";
 
 export default { title: "Button" };
 
@@ -14,8 +15,13 @@ export const withEmoji = () => (
   </Button>
 );
 
+const ButtonWithLayout = () => {
+  const {changeSize} = useContext(Context)
+  return <Button onClick={changeSize} variant="brand">With Layout</Button>
+}
+
 export const withLayout = () => (
   <Layout>
-    <Button variant="brand">With Layout</Button>
+    <ButtonWithLayout />
   </Layout>
 );
