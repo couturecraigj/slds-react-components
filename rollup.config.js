@@ -71,7 +71,7 @@ const config = [{
   input: 'service-worker.ts',
   output: {
     file: 'layout-sw.js',
-    format: 'esm',
+    format: 'es',
     name: OUTPUT_NAME,
     globals: GLOBALS
   },
