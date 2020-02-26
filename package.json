@@ -1,6 +1,6 @@
 {
   "name": "@moosecouture/slds-react-components",
-  "version": "1.0.70",
+  "version": "1.0.71",
   "main": "dist/slds-react-components.cjs.js",
   "module": "dist/slds-react-components.esm.js",
   "browser": "dist/slds-react-components.iife.js",
