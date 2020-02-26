@@ -42,5 +42,5 @@
     "importHelpers": true
   },
   "include": ["main.ts"],
-  "exclude": ["node_modules", "layout-sw.js", "dist"]
+  "exclude": ["node_modules", "dist/layout-sw.js", "dist"]
 }

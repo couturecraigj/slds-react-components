@@ -1,11 +1,11 @@
 import babel from "rollup-plugin-babel";
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import { terser } from "rollup-plugin-terser";
 import postcss from "rollup-plugin-postcss";
 import filesize from "rollup-plugin-filesize";
 import autoprefixer from "autoprefixer";
 import localResolve from "rollup-plugin-local-resolve";
-import url from '@rollup/plugin-url';
 
 import pkg from "./package.json";
 const extensions = [".js", ".jsx", ".ts", ".tsx"];
@@ -35,11 +35,7 @@ const PLUGINS = [
     browser: true,
     extensions
   }),
-  url({
-    include: ['layout-sw.js'],
-    fileName: "[name][extname]",
-    limit: 1
-  }),
+  terser(),
   commonjs(),
   filesize()
 ];
@@ -71,6 +67,16 @@ const config = [{
   input: 'service-worker.ts',
   output: {
     file: 'layout-sw.js',
+    format: 'es',
+    name: OUTPUT_NAME,
+    globals: GLOBALS
+  },
+  external: EXTERNAL,
+  plugins: PLUGINS
+}, {
+  input: 'service-worker.ts',
+  output: {
+    file: 'dist/layout-sw.js',
     format: 'es',
     name: OUTPUT_NAME,
     globals: GLOBALS

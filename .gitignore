@@ -4,6 +4,7 @@
 
 # Salesforce cache
 .sfdx/
+/layout-sw.js
 .localdevserver/
 
 # LWC VSCode autocomplete
