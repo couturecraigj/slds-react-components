@@ -17,14 +17,16 @@ const useSize = (
   const [sendMessage] = useLCC();
 
   const getSize = () => {
-    const windowHeight = getWindowHeight();
-    console.log(windowHeight, divRef.current?.offsetHeight, height);
-    if (
-      windowHeight === divRef.current?.offsetHeight &&
-      height === divRef.current?.offsetHeight
-    )
-      return;
-    setHeight(divRef.current?.offsetHeight || 0);
+    setTimeout(() =>  {
+      const windowHeight = getWindowHeight();
+      console.log(windowHeight, divRef.current?.offsetHeight, height);
+      if (
+        windowHeight === divRef.current?.offsetHeight &&
+        height === divRef.current?.offsetHeight
+      )
+        return;
+      setHeight(divRef.current?.offsetHeight || 0);
+    }, 50)
   };
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,7 +34,7 @@ const useSize = (
         { type: "size", payload: { height } },
         "height:" + height + ";"
       ).then(() => getSize());
-    }, 200);
+    }, 150);
     return () => clearTimeout(timer);
   }, [height]);
   useEffect(() => {
