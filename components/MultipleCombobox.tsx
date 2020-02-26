@@ -109,7 +109,6 @@ const MultipleCombobox = ({
       field.onChange({ target: { name, value: [] } });
     };
   }, []);
-  console.log(name, meta);
   return (
     <div
       className={`slds-form-element ${meta.touched &&

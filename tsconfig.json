@@ -28,7 +28,7 @@
       "es2017.object",
       "dom"
     ],
-    "module": "es6",
+    // "module": "es6",
     "removeComments": true,
     "alwaysStrict": true,
     "allowUnreachableCode": false,
@@ -42,5 +42,5 @@
     "importHelpers": true
   },
   "include": ["main.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "layout-sw.js", "dist"]
 }

@@ -4,6 +4,23 @@ import getWindowHeight from "../hooks/getWindowHeight";
 import Context from "./Context";
 import useLocation from "../hooks/useLocation";
 const defaultHeightVariance = { upper: 4, lower: 0 };
+const PROD = process.env.NODE_ENV === "production";
+const serviceWorker = PROD ? 'layout-sw.js' : '../layout-sw.js'
+
+function registerServiceWorker(): void {
+  if ("serviceWorker" in navigator && PROD) {
+    navigator.serviceWorker
+      .register(serviceWorker, { scope: location.href })
+      .then(registration =>
+        console.log(
+          `Service Worker registration complete, scope: '${registration.scope}'`
+        )
+      )
+      .catch(error =>
+        console.log(`Service Worker registration failed with error: '${error}'`)
+      );
+  }
+}
 
 const Layout = ({
   children,
@@ -47,8 +64,7 @@ const Layout = ({
       return;
     }
 
-    
-    setTimer(timer+1);
+    setTimer(timer + 1);
   };
   useEffect(() => {
     if (divRef.current) {
@@ -66,15 +82,15 @@ const Layout = ({
             "height:" + size.height + ";"
           ),
         500
-      )
-      return () => clearTimeout(timer)
+      );
+      return () => clearTimeout(timer);
     } else {
       changeSize();
     }
-    return () => {}
-    
-  }, [timer])
+    return () => {};
+  }, [timer]);
   useEffect(() => {
+    registerServiceWorker();
     if (!initialized) {
       setInitialized(true);
       changeSize();
