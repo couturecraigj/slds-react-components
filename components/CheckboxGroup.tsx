@@ -56,12 +56,14 @@ const SelectAll = ({
   children,
   selectAll,
   name,
+  onChange = () => {},
   label,
   options = []
 }: {
   children: (e: any) => any;
   name: string;
   label: string;
+  onChange: (e: any) => any;
   selectAll: boolean;
   options: OptionType[];
 }) => {
@@ -72,7 +74,9 @@ const SelectAll = ({
       .filter(option => option.value)
       .map(option => option.name || option.label)
   );
-
+  useEffect(() => {
+    onChange(optionList);
+  }, [optionList]);
   const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = options
       .filter(() => e.target.checked)
@@ -140,6 +144,7 @@ const CheckboxGroup = ({
   selectAll = false,
   options = [],
   name,
+  onChange = () => {},
   label = ""
 }: {
   options?: Array<OptionType>;
@@ -153,6 +158,7 @@ const CheckboxGroup = ({
       <SelectAll
         label={label}
         name={name || label}
+        onChange={onChange}
         options={options}
         selectAll={selectAll}
       >

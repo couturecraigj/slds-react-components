@@ -9,6 +9,7 @@ export const withoutAll = () => (
   <Layout>
     <Formik onSubmit={console.log} initialValues={{ nothing: [] }}>
       <CheckboxGroup
+        onChange={(...args) => console.log(...args)}
         options={[{ label: "something", value: true }, { label: "something else" }]}
         name="nothing"
         label="Nothing"
