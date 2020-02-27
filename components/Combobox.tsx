@@ -30,7 +30,7 @@ const Combobox = ({
   const [focused, setFocused] = useState();
   const [left, setLeft] = useState();
   const [hovered, setHovered] = useState();
-  const [value, setValue] = useState(defaultValue || field.value);
+  const [value, setValue] = useState(defaultValue);
   const [display, setDisplay] = useState(defaultDisplay);
   const onClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { value, display } = event.currentTarget.dataset;
@@ -65,16 +65,29 @@ const Combobox = ({
   }, []);
   useEffect(() => {
     setValue(field.value);
-    console.log(field)
     const display =
       (options.find(({ value }) => field.value === value) || {}).label ||
       field.value ||
       "";
-    console.log(display)
     setDisplay(display);
     onChange(field.value);
-    console.log(field.value)
-  }, [field.value, options]);
+  }, [field.value]);
+  useEffect(() => {
+    if (options.length && field.value !== value) {
+      if (field.value !== value) {
+        setValue(field.value);
+      }
+     
+      const newDisplay =
+        (options.find(({ value }) => field.value === value) || {}).label ||
+        field.value ||
+        "";
+      if(newDisplay !== display) {
+        setDisplay(newDisplay);
+      }
+      
+    }
+  }, [field.value, options, value, display]);
   const noneOption = required ? [] : [{ value: "", label: placeholder }];
 
   return (
