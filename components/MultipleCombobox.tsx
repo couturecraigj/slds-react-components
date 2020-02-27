@@ -110,6 +110,9 @@ const MultipleCombobox = ({
       field.onChange({ target: { name, value: [] } });
     };
   }, []);
+  useEffect(() => {
+    setValues(field.value)
+  }, [field.value, options]);
   return (
     <div
       className={`slds-form-element ${meta.touched &&

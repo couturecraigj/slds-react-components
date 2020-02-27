@@ -66,14 +66,13 @@ const Combobox = ({
   useEffect(() => {
 
     setValue(field.value);
-    console.log(field.value)
     const display =
       (options.find(({ value }) => field.value === value) || {}).label ||
       field.value ||
       "";
     setDisplay(display);
     onChange(field.value);
-  }, [field.value]);
+  }, [field.value, options]);
   const noneOption = required ? [] : [{ value: "", label: placeholder }];
 
   return (
