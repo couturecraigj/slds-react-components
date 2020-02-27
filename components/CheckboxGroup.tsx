@@ -10,6 +10,7 @@ type OptionType = {
   label: string;
   name?: string;
   value?: boolean;
+  disabled?: boolean;
   Id?: string;
 };
 
@@ -18,11 +19,13 @@ const Checkbox = ({
   name = "",
   checked = false,
   label,
+  disabled = false,
   onChange = () => {}
 }: {
   name: string;
   Id: string;
   checked: boolean;
+  disabled?: boolean;
   label: string;
   onChange: (e: any) => any;
 }) => {
@@ -41,7 +44,8 @@ const Checkbox = ({
           type="checkbox"
           id={Id}
           name={name}
-          checked={checked}
+          checked={!disabled ? checked : false}
+          disabled={disabled}
           {...field}
           onChange={onInputChange}
         />
@@ -75,13 +79,20 @@ const SelectAll = ({
   const [field, meta] = useField(name);
   const [state, setState] = useState("some");
   const [optionList, setOptionList] = useState(getOptionList(options));
+  const disabledOptions = options
+    .filter(option => option.disabled)
+    .map(option => option.name || option.label);
   useEffect(() => {
     onChange(optionList);
     field.onChange({ target: { name, value: optionList } });
   }, [optionList]);
   const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = options
-      .filter(() => e.target.checked)
+      .filter(option =>
+        disabledOptions.includes(option.name || option.label)
+          ? false
+          : e.target.checked
+      )
       .map(option => option.name || option.label);
     setOptionList(value);
     field.onChange({ target: { name, value } });
@@ -171,16 +182,25 @@ const CheckboxGroup = ({
           onChange: (e: any) => any;
           options: OptionType[];
         }) =>
-          options.map(({ label, name = label, Id = name, value = false }) => (
-            <Checkbox
-              checked={value}
-              name={name}
-              key={Id}
-              label={label}
-              Id={Id}
-              onChange={onChange}
-            />
-          ))
+          options.map(
+            ({
+              label,
+              name = label,
+              Id = name,
+              value = false,
+              disabled = false
+            }) => (
+              <Checkbox
+                checked={value}
+                disabled={disabled}
+                name={name}
+                key={Id}
+                label={label}
+                Id={Id}
+                onChange={onChange}
+              />
+            )
+          )
         }
       </SelectAll>
     );

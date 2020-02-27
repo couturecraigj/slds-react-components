@@ -3,6 +3,7 @@ declare type OptionType = {
     label: string;
     name?: string;
     value?: boolean;
+    disabled?: boolean;
     Id?: string;
 };
 declare const CheckboxGroup: ({ selectAll, options, name, onChange, label }: {
