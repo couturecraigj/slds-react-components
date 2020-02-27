@@ -91,7 +91,10 @@ const Layout = ({
         slds
       }}
     >
-      <div ref={divRef} style={{ paddingInlineEnd: "1px" }}>
+      <div
+        ref={divRef}
+        style={{ paddingInlineEnd: "2px", paddingInlineStart: "2px" }}
+      >
         <link
           rel="stylesheet"
           href={`${slds}/styles/salesforce-lightning-design-system.min.css`}

@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 
+const getOptionList = (options: OptionType[]): string[] =>
+  options
+    .filter(option => option.value)
+    .map(option => option.name || option.label);
+
 type OptionType = {
   label: string;
   name?: string;
@@ -69,13 +74,10 @@ const SelectAll = ({
 }) => {
   const [field, meta] = useField(name);
   const [state, setState] = useState("some");
-  const [optionList, setOptionList] = useState(
-    options
-      .filter(option => option.value)
-      .map(option => option.name || option.label)
-  );
+  const [optionList, setOptionList] = useState(getOptionList(options));
   useEffect(() => {
     onChange(optionList);
+    field.onChange({ target: { name, value: optionList } });
   }, [optionList]);
   const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = options
