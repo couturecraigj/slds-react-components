@@ -105,6 +105,7 @@ const MultipleCombobox = ({
     field.onBlur(e);
   };
   useEffect(() => {
+    setValues(field.value)
     return () => {
       field.onChange({ target: { name, value: [] } });
     };

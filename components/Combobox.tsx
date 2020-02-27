@@ -64,7 +64,9 @@ const Combobox = ({
     };
   }, []);
   useEffect(() => {
+
     setValue(field.value);
+    console.log(field.value)
     const display =
       (options.find(({ value }) => field.value === value) || {}).label ||
       field.value ||

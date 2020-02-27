@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 
-const getOptionList = (options: OptionType[]): string[] =>
+const getOptionList = (options: OptionType[], currentValues: string[] = []): string[] =>
   options
-    .filter(option => option.value)
+    .filter(option => currentValues.includes(option.name || option.label) || option.value)
     .map(option => option.name || option.label);
 
 type OptionType = {
@@ -78,7 +78,7 @@ const SelectAll = ({
 }) => {
   const [field, meta] = useField(name);
   const [state, setState] = useState("some");
-  const [optionList, setOptionList] = useState(getOptionList(options));
+  const [optionList, setOptionList] = useState(getOptionList(options, field.value));
   const disabledOptions = options
     .filter(option => option.disabled)
     .map(option => option.name || option.label);
