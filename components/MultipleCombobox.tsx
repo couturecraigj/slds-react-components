@@ -211,7 +211,13 @@ const MultipleCombobox = ({
                     const { value: optionValue, id, label } = convertOption(
                       option
                     );
-                    if (value && (!label.includes(value) || !optionValue))
+                    if (
+                      value &&
+                      (!label
+                        .toLocaleLowerCase()
+                        .includes(value.toLocaleLowerCase()) ||
+                        !optionValue)
+                    )
                       return null;
                     const selected = values.includes(optionValue);
                     return (
