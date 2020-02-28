@@ -23,7 +23,7 @@ type OptionType = {
 const Checkbox = ({
   Id = "",
   name = "",
-  checked = false,
+  checked: passedChecked = false,
   label,
   disabled = false,
   onChange = () => {}
@@ -36,15 +36,22 @@ const Checkbox = ({
   onChange: (e: any) => any;
 }) => {
   try {
+    const [checked, setChecked] = useState(passedChecked)
     const [field] = useField(name);
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.checked === checked) return;
-      field.onChange(e);
-      onChange(e);
+      setChecked(e.target.checked)
     };
     useEffect(() => {
       if (field.value !== checked)
         field.onChange({ target: { name, value: checked } });
+    }, [checked]);
+    useEffect(() => {
+      if (field.value !== checked) {
+        const event = { target: { name, value: checked } }
+        field.onChange(event);
+        onChange(event);
+      }
     }, [checked]);
     return (
       <div className="slds-checkbox" key={Id}>
@@ -96,9 +103,9 @@ const SelectAll = ({
     onChange(optionList);
     field.onChange({ target: { name, value: optionList } });
   }, [optionList]);
-  useEffect(() => {
-    setOptionList(getOptionList(options, field.value));
-  }, [field.value]);
+  // useEffect(() => {
+  //   setOptionList(getOptionList(options, field.value));
+  // }, [field.value]);
   const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = options
       .filter(option =>
