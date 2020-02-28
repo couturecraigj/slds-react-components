@@ -68,3 +68,30 @@ export const withoutChosenValue = () => (
     </Formik>
   </Layout>
 );
+
+export const withChosenValueAndDelayedOptionsAndSearch = () => {
+  const [options, setOptions] = useState([])
+  useEffect(() => {
+    setTimeout(() => {
+      setOptions([
+        { label: "something", value: "try" },
+        { label: "something else" }
+      ])
+    }, 300)
+  }, [])
+  return (
+  <Layout>
+    <Formik onSubmit={console.log} initialValues={{ nothing: ["try"] }}>
+      <Form>
+        <MultipleCombobox
+          onChange={(...args) => console.log(...args)}
+          filterable
+          options={options}
+          name="nothing"
+          label="Nothing"
+        />
+        <button type="submit">Submit</button>
+      </Form>
+    </Formik>
+  </Layout>
+)};

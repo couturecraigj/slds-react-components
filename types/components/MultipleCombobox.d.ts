@@ -4,7 +4,7 @@ declare type OptionType = {
     value?: string;
     id?: string;
 };
-declare const MultipleCombobox: ({ label, name, id, placeholder, defaultValue, options, onChange: passedChange, readOnly, required }: {
+declare const MultipleCombobox: ({ label, name, id, placeholder, defaultValue, filterable, options, onChange: passedChange, readOnly, required }: {
     label: string;
     name?: string | undefined;
     id?: string | undefined;
@@ -14,6 +14,7 @@ declare const MultipleCombobox: ({ label, name, id, placeholder, defaultValue, o
     options: (string | OptionType)[];
     onChange?: ((e: any) => any) | undefined;
     readOnly?: boolean | undefined;
+    filterable?: boolean | undefined;
     required?: boolean | undefined;
 }) => JSX.Element;
 export default MultipleCombobox;
