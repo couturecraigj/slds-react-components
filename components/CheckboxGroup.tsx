@@ -43,7 +43,8 @@ const Checkbox = ({
       onChange(e);
     };
     useEffect(() => {
-      field.onChange({ target: { name, value: checked } });
+      if (field.value !== checked)
+        field.onChange({ target: { name, value: checked } });
     }, [checked]);
     return (
       <div className="slds-checkbox" key={Id}>
