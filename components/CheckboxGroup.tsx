@@ -86,6 +86,9 @@ const SelectAll = ({
     onChange(optionList);
     field.onChange({ target: { name, value: optionList } });
   }, [optionList]);
+  useEffect(() => {
+    setOptionList(getOptionList(options, field.value));
+  }, [field.value]);
   const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = options
       .filter(option =>
@@ -181,6 +184,7 @@ const CheckboxGroup = ({
         }: {
           onChange: (e: any) => any;
           options: OptionType[];
+          values: string[];
         }) =>
           options.map(
             ({
