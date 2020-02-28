@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 
-const getOptionList = (options: OptionType[], currentValues: string[] = []): string[] =>
+const getOptionList = (
+  options: OptionType[],
+  currentValues: string[] = []
+): string[] =>
   options
-    .filter(option => currentValues.includes(option.name || option.label) || option.value)
+    .filter(
+      option =>
+        currentValues.includes(option.name || option.label) || option.value
+    )
     .map(option => option.name || option.label);
 
 type OptionType = {
@@ -78,7 +84,9 @@ const SelectAll = ({
 }) => {
   const [field, meta] = useField(name);
   const [state, setState] = useState("some");
-  const [optionList, setOptionList] = useState(getOptionList(options, field.value));
+  const [optionList, setOptionList] = useState(
+    getOptionList(options, field.value)
+  );
   const disabledOptions = options
     .filter(option => option.disabled)
     .map(option => option.name || option.label);
@@ -105,9 +113,15 @@ const SelectAll = ({
     const newOptionList = optionList
       .concat(e.target.name)
       .filter(option => (option === e.target.name ? e.target.checked : option));
-    if (newOptionList.length === options.length) setState("all");
-    if (newOptionList.length === 0) setState("none");
+    if (newOptionList.length === options.length && state !== "all")
+      setState("all");
+    if (newOptionList.length === 0 && state !== "none") setState("none");
     if (state !== "some") setState("some");
+    if (
+      !!optionList.find(string => e.target.name === string) === e.target.checked
+    )
+      return;
+    if (JSON.stringify(optionList) === JSON.stringify(newOptionList)) return;
     setOptionList(newOptionList);
   };
   return (
