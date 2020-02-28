@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 const SortButtons = ({
   options = [],
@@ -23,16 +23,18 @@ const SortButtons = ({
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     let newAsc = asc;
     const { value } = event.currentTarget.dataset;
-    setSelected(value);
     if (value === selected) {
       newAsc = !asc;
       setAsc(newAsc);
     } else {
       setAsc(true);
     }
-    onChange(value);
-    field.onChange({ target: { name, value: { value, asc: newAsc } } });
+    setSelected(value);
   };
+  useEffect(() => {
+    field.onChange({ target: { name, value: { value: selected, asc: asc } } });
+    onChange({ value: selected, asc: asc });
+  }, [selected, asc])
   return (
     <div
       className={`slds-form-element ${meta.touched &&
