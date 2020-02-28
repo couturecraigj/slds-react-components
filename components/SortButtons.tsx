@@ -20,21 +20,27 @@ const SortButtons = ({
     (options.find(option => option.selected) || {}).value
   );
   const [asc, setAsc] = useState(true);
+  const [value, setValue] = useState({ value: selected, asc });
   const onClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     let newAsc = asc;
-    const { value } = event.currentTarget.dataset;
-    if (value === selected) {
+    const { value: newValue } = event.currentTarget.dataset;
+    if (newValue === selected) {
       newAsc = !asc;
       setAsc(newAsc);
     } else {
       setAsc(true);
     }
-    setSelected(value);
+    if(value.value !== newValue) setSelected(newValue);
   };
   useEffect(() => {
-    field.onChange({ target: { name, value: { value: selected, asc: asc } } });
-    onChange({ value: selected, asc: asc });
+    if (selected !== value.value || asc !== value.asc) {
+      setValue({ value: selected, asc: asc });
+    }
   }, [selected, asc])
+  useEffect(() => {
+    field.onChange({ target: { name, value } });
+    onChange(value)
+  }, [value])
   return (
     <div
       className={`slds-form-element ${meta.touched &&
