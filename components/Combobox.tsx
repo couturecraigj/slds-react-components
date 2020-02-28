@@ -77,15 +77,14 @@ const Combobox = ({
       if (field.value !== value) {
         setValue(field.value);
       }
-     
-      const newDisplay =
-        (options.find(({ value }) => field.value === value) || {}).label ||
-        field.value ||
-        "";
-      if(newDisplay !== display) {
-        setDisplay(newDisplay);
-      }
-      
+      console.log(options);
+    }
+    const newDisplay =
+      (options.find(({ value }) => field.value === value) || {}).label ||
+      field.value ||
+      "";
+    if (newDisplay !== display) {
+      setDisplay(newDisplay);
     }
   }, [field.value, options, value, display]);
   const noneOption = required ? [] : [{ value: "", label: placeholder }];
