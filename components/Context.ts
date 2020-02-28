@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-type contextArguments = {
+export type contextArguments = {
   changeSize?: () => any;
   getLocation?: () => Promise<Position | undefined>;
   location?: Position | undefined;

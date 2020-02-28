@@ -1,6 +1,6 @@
 /// <reference types="react" />
 /// <reference types="styled-jsx" />
-declare type contextArguments = {
+export declare type contextArguments = {
     changeSize?: () => any;
     getLocation?: () => Promise<Position | undefined>;
     location?: Position | undefined;
