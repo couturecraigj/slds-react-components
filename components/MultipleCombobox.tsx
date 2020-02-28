@@ -218,7 +218,15 @@ const MultipleCombobox = ({
             </div>
           </div>
         </div>
-        {values.length > 0 && (
+        {values.filter(chosenValue => {
+          const specificOption = options.find(option => {
+            const { value: optionValue } = convertOption(option);
+            if (chosenValue === optionValue) return true;
+            return false;
+          });
+          if (specificOption) return true;
+          return false;
+        }).length > 0 && (
           <div
             className="slds-listbox_selection-group large-group"
             style={{ height: "auto" }}
