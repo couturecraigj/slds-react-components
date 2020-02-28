@@ -38,6 +38,7 @@ const Checkbox = ({
   try {
     const [field] = useField(name);
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.checked === checked) return;
       field.onChange(e);
       onChange(e);
     };
