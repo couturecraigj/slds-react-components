@@ -1,15 +1,23 @@
-import { useEffect } from "react";
-import LCC from "lightning-container";
+import { useEffect, useRef } from "react";
 
-const useLCC = (messageFunction?: (message: any) => PromiseLike<{type: string, payload: any} | void> | void) => {
-  // const [sentMessages, setSentMessages] = useState([]);
+const useLCC = (
+  messageFunction?: (
+    message: any
+  ) => PromiseLike<{ type: string; payload: any } | void> | void
+) => {
+  const lccRef = useRef<any>(null);
   useEffect(() => {
-    if (messageFunction) {
-      LCC.addMessageHandler(messageFunction);
+    import("lightning-container")
+      .then(module => (lccRef.current = module.default))
+      .then(() => {
+        if (messageFunction) {
+          lccRef.current.addMessageHandler(messageFunction);
+        }
+      });
+    if (messageFunction)
       return () => {
-        LCC.removeMessageHandler(messageFunction);
+        lccRef.current.removeMessageHandler(messageFunction);
       };
-    }
     return () => {};
   }, []);
   const sendMessage = (message: any, returnMessageType?: any) =>
@@ -17,14 +25,14 @@ const useLCC = (messageFunction?: (message: any) => PromiseLike<{type: string, p
       if (returnMessageType) {
         const messageHandler = (message: any) => {
           if (message.type === returnMessageType) {
-            LCC.removeMessageHandler(messageHandler);
+            lccRef.current.removeMessageHandler(messageHandler);
             resolve(message);
           }
         };
-        LCC.addMessageHandler(messageHandler);
+        lccRef.current.addMessageHandler(messageHandler);
       }
 
-      LCC.sendMessage(message);
+      lccRef.current.sendMessage(message);
       if (window.parent)
         window.parent.postMessage(message, window.location.origin);
       // setSentMessages(sentMessages.concat(message));

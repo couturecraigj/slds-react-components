@@ -65,6 +65,7 @@ const OUTPUT_DATA = [
 
 const config = [{
   input: 'service-worker.ts',
+  inlineDynamicImports: true,
   output: {
     file: 'layout-sw.js',
     format: 'es',
