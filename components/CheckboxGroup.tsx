@@ -1,180 +1,279 @@
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 
-const getOptionList = (
-  options: OptionType[],
-  currentValues: string[] = []
-): string[] =>
-  options
-    .filter(
-      option =>
-        currentValues.includes(option.name || option.label) || option.value
-    )
-    .map(option => option.name || option.label);
-
 type OptionType = {
   label: string;
   name?: string;
   value?: boolean;
+  required?: boolean;
   disabled?: boolean;
   Id?: string;
 };
 
 const Checkbox = ({
-  Id = "",
-  name = "",
-  checked: passedChecked = false,
-  label,
+  label = "",
+  name = label,
+  id = name,
   disabled = false,
-  onChange = () => {}
+  required = false,
+  onChange: passedOnChange,
+  value
 }: {
-  name: string;
-  Id: string;
-  checked: boolean;
-  disabled?: boolean;
   label: string;
-  onChange: (e: any) => any;
+  name?: string;
+  id?: string;
+  disabled: boolean;
+  required: boolean;
+  onChange: (e?: any) => any;
+  value: boolean;
 }) => {
-  try {
-    const [checked, setChecked] = useState(passedChecked)
-    const [field] = useField(name);
-    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.checked === checked) return;
-      setChecked(e.target.checked)
-    };
-    useEffect(() => {
-      if (field.value !== checked)
-        field.onChange({ target: { name, value: checked } });
-    }, [checked]);
-    useEffect(() => {
-      if (field.value !== checked) {
-        const event = { target: { name, value: checked } }
-        field.onChange(event);
-        onChange(event);
-      }
-    }, [checked]);
-    return (
-      <div className="slds-checkbox" key={Id}>
-        <input
-          type="checkbox"
-          id={Id}
-          name={name}
-          checked={!disabled ? checked : false}
-          disabled={disabled}
-          {...field}
-          onChange={onInputChange}
-        />
-        <label className="slds-checkbox__label" htmlFor={Id}>
-          <span className="slds-checkbox_faux"></span>
-          <span className="slds-form-element__label">{label}</span>
-        </label>
-      </div>
-    );
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
+  const [field, meta] = useField(name);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    field.onChange({ target: { name, value: e.target.checked } });
+    passedOnChange(e);
+  };
+  useEffect(() => {
+    if (field.value !== value) {
+      field.onChange({ target: { name, value: value } });
+    }
+  }, [value, field.value]);
+  return (
+    <div
+      className={`slds-checkbox ${
+        meta.touched && meta.error ? "slds-has-error" : ""
+      }`}
+    >
+      {required && (
+        <abbr className="slds-required" title="required">
+          *
+        </abbr>
+      )}
+      <input
+        type="checkbox"
+        name={name}
+        onChange={onChange}
+        id={id}
+        checked={value}
+        disabled={disabled}
+      />
+      <label className="slds-checkbox__label" htmlFor={id}>
+        <span className="slds-checkbox_faux"></span>
+        <span className="slds-form-element__label">{label}</span>
+      </label>
+      {meta.touched && meta.error ? (
+        <div id={`${name}-error`} className="slds-form-element__help">
+          {meta.error}
+        </div>
+      ) : null}
+    </div>
+  );
 };
 
 const SelectAll = ({
-  children,
-  selectAll,
-  name,
+  selectAll = false,
+  required = false,
+  disabled = false,
+  name = "",
+  label = "",
+  children = () => {},
   onChange = () => {},
-  label,
-  options = []
+  options: passedOptions = []
 }: {
-  children: (e: any) => any;
+  selectAll: boolean;
+  required: boolean;
+  disabled: boolean;
   name: string;
   label: string;
-  onChange: (e: any) => any;
-  selectAll: boolean;
+  children: (e?: any) => any;
+  onChange: (e?: any) => any;
   options: OptionType[];
 }) => {
   const [field, meta] = useField(name);
-  const [state, setState] = useState("some");
-  const [optionList, setOptionList] = useState(
-    getOptionList(options, field.value)
+  const [selectedState, setSelectedState] = useState<"some" | "all" | "none">(
+    "some"
   );
-  const disabledOptions = options
-    .filter(option => option.disabled)
-    .map(option => option.name || option.label);
-  useEffect(() => {
-    onChange(optionList);
-    field.onChange({ target: { name, value: optionList } });
-  }, [optionList]);
-  // useEffect(() => {
-  //   setOptionList(getOptionList(options, field.value));
-  // }, [field.value]);
-  const onSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = options
-      .filter(option =>
-        disabledOptions.includes(option.name || option.label)
-          ? false
-          : e.target.checked
-      )
-      .map(option => option.name || option.label);
-    setOptionList(value);
-    field.onChange({ target: { name, value } });
-    setState(e.target.checked ? "all" : "none");
+  const [options, setOptions] = useState<OptionType[]>([]);
+  const onSelectAll = () => {
+    if (selectedState === "all") {
+      field.onChange({
+        target: {
+          name,
+          value: []
+        }
+      });
+    } else {
+      field.onChange({
+        target: {
+          name,
+          value: options.map(option => option.name || option.label)
+        }
+      });
+    }
   };
   const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newOptionList = optionList
-      .concat(e.target.name)
-      .filter(option => (option === e.target.name ? e.target.checked : option));
-    if (newOptionList.length === options.length && state !== "all")
-      setState("all");
-    if (newOptionList.length === 0 && state !== "none") setState("none");
-    if (state !== "some") setState("some");
-    if (
-      !!optionList.find(string => e.target.name === string) === e.target.checked
-    )
-      return;
-    if (JSON.stringify(optionList) === JSON.stringify(newOptionList)) return;
-    setOptionList(newOptionList);
+    const optionList: string[] = [];
+    const fieldValues: string[] = [];
+    const newOptions = options.map(option => {
+      if (!option.disabled) fieldValues.push(option.name || option.label);
+      if (!option.disabled) {
+        if (e.target.name === (option.name || option.label)) {
+          if (e.target.checked) optionList.push(e.target.name);
+        } else if (option.value) optionList.push(option.name || option.label);
+      }
+      if (e.target.name === (option.name || option.label)) {
+        return {
+          ...option,
+          value: e.target.checked
+        };
+      }
+      return option;
+    });
+
+    if (optionList.length === fieldValues.length) {
+      setSelectedState("all");
+    } else if (optionList.length === 0) {
+      setSelectedState("none");
+    } else {
+      setSelectedState("some");
+    }
+    setOptions(newOptions);
+    field.onChange({ target: { name, value: optionList } });
+    onChange(optionList)
   };
+  useEffect(() => {
+    if (field.value) {
+      const newOptions: OptionType[] = field.value.length
+        ? passedOptions.map(option => {
+            return {
+              ...option,
+              value: field.value.includes(option.name || option.label)
+            };
+          })
+        : passedOptions;
+      field.onChange({
+        target: {
+          name,
+          value: newOptions
+            .map(
+              (option: OptionType): string | boolean =>
+                !!option.value && (option.name || option.label)
+            )
+            .filter((v: string | boolean) => v)
+        }
+      });
+      setOptions(newOptions);
+    }
+  }, []);
+  useEffect(() => {
+    let newOptions = [];
+    const passedOptionsArray = passedOptions
+      .filter(option => !(disabled || option.disabled))
+      .map(option => option.name || option.label);
+    const fieldValuesArray = (field.value || [])
+      .map((string: string): OptionType | undefined =>
+        passedOptions.find(option => option.name || option.label === string)
+      )
+      .filter(
+        (option: OptionType | undefined): boolean =>
+          !!option && !(disabled || option.disabled)
+      )
+      .map((option: OptionType): string => option.name || option.label);
+    if (!disabled && fieldValuesArray.length === passedOptionsArray.length) {
+      if(selectedState !== 'all') setSelectedState("all");
+      newOptions = passedOptions.map(option => {
+        return {
+          ...option,
+          disabled: disabled || option.disabled,
+          value: option.disabled ? false : true
+        };
+      });
+    } else if (fieldValuesArray.length === 0) {
+      if(selectedState !== 'none')setSelectedState("none");
+      newOptions = passedOptions.map(option => {
+        return {
+          ...option,
+          disabled: disabled || option.disabled,
+          value: false
+        };
+      });
+    } else {
+      if(selectedState !== 'some') setSelectedState("some");
+      newOptions = passedOptions.map(option => {
+        return {
+          ...option,
+          disabled: disabled || option.disabled,
+          value: option.disabled
+            ? false
+            : field.value.includes(option.name || option.label)
+        };
+      });
+    }
+    if (JSON.stringify(field.value) !== JSON.stringify(fieldValuesArray)) {
+      field.onChange({
+        target: {
+          name,
+          value: fieldValuesArray
+        }
+      });
+    }
+    if (JSON.stringify(options) !== JSON.stringify(newOptions)) {
+      onChange(fieldValuesArray);
+      setOptions(newOptions);
+    }
+    // return () => onChange('something')
+  }, [field.value]);
   return (
     <fieldset
-      className={`slds-form-element ${meta.touched &&
-        meta.error &&
-        `slds-has-error`}`}
+      className={`slds-form-element ${
+        meta.touched && meta.error ? "slds-has-error" : ""
+      }`}
     >
       <legend className="slds-form-element__legend slds-form-element__label">
+        {required && (
+          <abbr className="slds-required" title="required">
+            *
+          </abbr>
+        )}
         {label}
       </legend>
       <div className="slds-form-element__control">
-        {selectAll ? (
-          <>
-            <div className="slds-checkbox">
-              <input
-                type="checkbox"
-                id="select-all"
-                onChange={onSelectAll}
-                checked={state === "all" ? true : false}
-              />
-              <label className="slds-checkbox__label" htmlFor="select-all">
-                <span className="slds-checkbox_faux"></span>
-                <span className="slds-form-element__label">Select All</span>
-              </label>
-            </div>
-            {children({
-              onChange: onCheckboxChange,
-              options: options.map(option => ({
-                ...option,
-                value: optionList.includes(option.name || option.label)
-              }))
-            })}
-          </>
-        ) : (
+        {selectAll && (
+          <div className="slds-checkbox">
+            <input
+              type="checkbox"
+              disabled={disabled}
+              name={name}
+              id={`${name}-select-all-input`}
+              checked={selectedState === "all"}
+              onChange={onSelectAll}
+            />
+            <label
+              className="slds-checkbox__label"
+              htmlFor={`${name}-select-all-input`}
+            >
+              <span className="slds-checkbox_faux"></span>
+              <span className="slds-form-element__label">Select All</span>
+            </label>
+          </div>
+        )}
+
+        {options.map(option =>
           children({
             onChange: onCheckboxChange,
-            options: options.map(option => ({
-              ...option,
-              value: optionList.includes(option.name || option.label)
-            }))
+            disabled: option.disabled,
+            required: option.required,
+            name: option.name,
+            value: option.value,
+            label: option.label,
+            id: option.Id || option.name || option.label
           })
         )}
       </div>
+      {meta.touched && meta.error ? (
+        <div id={`${name}-error`} className="slds-form-element__help">
+          {meta.error}
+        </div>
+      ) : null}
     </fieldset>
   );
 };
@@ -182,59 +281,43 @@ const SelectAll = ({
 const CheckboxGroup = ({
   selectAll = false,
   options = [],
-  name,
-  onChange = () => {},
-  label = ""
+  label = "",
+  required = false,
+  disabled = false,
+  name = label,
+  onChange = () => {}
 }: {
   options?: Array<OptionType>;
   selectAll?: boolean;
+  required?: boolean;
+  disabled?: boolean;
   name?: string;
   onChange?: (event?: any) => any;
   label: string;
 }) => {
-  try {
-    return (
-      <SelectAll
-        label={label}
-        name={name || label}
-        onChange={onChange}
-        options={options}
-        selectAll={selectAll}
-      >
-        {({
-          onChange,
-          options
-        }: {
-          onChange: (e: any) => any;
-          options: OptionType[];
-          values: string[];
-        }) =>
-          options.map(
-            ({
-              label,
-              name = label,
-              Id = name,
-              value = false,
-              disabled = false
-            }) => (
-              <Checkbox
-                checked={value}
-                disabled={disabled}
-                name={name}
-                key={Id}
-                label={label}
-                Id={Id}
-                onChange={onChange}
-              />
-            )
-          )
-        }
-      </SelectAll>
-    );
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
+  return (
+    <SelectAll
+      name={name}
+      onChange={onChange}
+      selectAll={selectAll}
+      required={required}
+      disabled={disabled}
+      label={label}
+      options={options}
+    >
+      {({ id, onChange, name, label, value, disabled, required }) => (
+        <Checkbox
+          disabled={disabled}
+          required={required}
+          key={id}
+          onChange={onChange}
+          name={name}
+          label={label}
+          value={value}
+        />
+      )}
+    </SelectAll>
+  );
 };
 
 export default CheckboxGroup;
