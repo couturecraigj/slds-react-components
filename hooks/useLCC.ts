@@ -7,21 +7,24 @@ const useLCC = (
 ) => {
   const lccRef = useRef<any>(null);
   useEffect(() => {
-    import("lightning-container")
-      .then(module => (lccRef.current = module.default))
-      .then(() => {
-        if (messageFunction) {
-          lccRef.current.addMessageHandler(messageFunction);
-        }
-      });
+    if (typeof window === "object")
+      import("lightning-container")
+        .then(module => (lccRef.current = module.default))
+        .then(() => {
+          if (messageFunction) {
+            lccRef.current.addMessageHandler(messageFunction);
+          }
+        });
     if (messageFunction)
       return () => {
-        lccRef.current.removeMessageHandler(messageFunction);
+        if (typeof window === "object")
+          lccRef.current.removeMessageHandler(messageFunction);
       };
     return () => {};
   }, []);
   const sendMessage = (message: any, returnMessageType?: any) =>
     new Promise(resolve => {
+      if (typeof window !== "object") resolve();
       if (returnMessageType) {
         const messageHandler = (message: any) => {
           if (message.type === returnMessageType) {
