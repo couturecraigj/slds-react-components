@@ -117,6 +117,7 @@ const SelectAll = ({
       if (!option.disabled) fieldValues.push(option.name || option.label);
       if (!option.disabled) {
         if (e.target.name === (option.name || option.label)) {
+          console.log(e.target.name);
           if (e.target.checked) optionList.push(e.target.name);
         } else if (option.value) optionList.push(option.name || option.label);
       }
@@ -138,7 +139,7 @@ const SelectAll = ({
     }
     setOptions(newOptions);
     field.onChange({ target: { name, value: optionList } });
-    onChange(optionList)
+    onChange(optionList);
   };
   useEffect(() => {
     if (field.value) {
@@ -171,7 +172,7 @@ const SelectAll = ({
       .map(option => option.name || option.label);
     const fieldValuesArray = (field.value || [])
       .map((string: string): OptionType | undefined =>
-        passedOptions.find(option => option.name || option.label === string)
+        passedOptions.find(option => (option.name || option.label) === string)
       )
       .filter(
         (option: OptionType | undefined): boolean =>
@@ -179,7 +180,7 @@ const SelectAll = ({
       )
       .map((option: OptionType): string => option.name || option.label);
     if (!disabled && fieldValuesArray.length === passedOptionsArray.length) {
-      if(selectedState !== 'all') setSelectedState("all");
+      if (selectedState !== "all") setSelectedState("all");
       newOptions = passedOptions.map(option => {
         return {
           ...option,
@@ -188,7 +189,7 @@ const SelectAll = ({
         };
       });
     } else if (fieldValuesArray.length === 0) {
-      if(selectedState !== 'none')setSelectedState("none");
+      if (selectedState !== "none") setSelectedState("none");
       newOptions = passedOptions.map(option => {
         return {
           ...option,
@@ -197,7 +198,7 @@ const SelectAll = ({
         };
       });
     } else {
-      if(selectedState !== 'some') setSelectedState("some");
+      if (selectedState !== "some") setSelectedState("some");
       newOptions = passedOptions.map(option => {
         return {
           ...option,
@@ -209,6 +210,7 @@ const SelectAll = ({
       });
     }
     if (JSON.stringify(field.value) !== JSON.stringify(fieldValuesArray)) {
+      console.log(fieldValuesArray);
       field.onChange({
         target: {
           name,

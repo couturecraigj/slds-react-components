@@ -44,11 +44,58 @@ export const withAll = () => (
   </Layout>
 );
 
+const options = [
+  {
+    label: "Only Maintenance events within date range",
+    name: "onlyIncludeMXWithinDateRange",
+    value: true
+  },
+  {
+    label: "Search Aircraft that are missing Service Centers",
+    name: "searchMissingServiceCenter",
+    value: false
+  },
+  {
+    label:
+      "Search within so many miles of My Location or the designated Service Center",
+    name: "searchDistance",
+    value: false
+  },
+  {
+    label: "Exclude Maintenance events associated with opportunities",
+    name: "excludeMXAssociatedWithOpptys",
+    value: true
+  },
+  {
+    label: "Show only Maintenance events that are 0 hours",
+    name: "showOnlyMXThatAreZeroHours",
+    value: false
+  },
+  {
+    label: "Exclude Deferred Maintenance",
+    name: "excludeDeferredMX",
+    value: true
+  },
+  { label: "Search ALL Maintenance Records", name: "searchAllServiceMXRecords", value: false },
+  { label: "Exclude fleet", name: "excludeFleet", value: true },
+  {
+    label:
+      "Remember this query incase I reload the page (experimental)",
+    name: "rememberMyPreviousSearch",
+    value: false
+  // },
+  // {
+  //   label: "My internet connection is slow (experimental)",
+  //   name: "slowConnection",
+  //   value: false
+  }
+];
+
 const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) => {
   const formik = useFormikContext();
   const onReset = () => {
-    setInitialValues({nothing: ['somethingElse']})
-    formik.resetForm({values: {nothing: ['somethingElse']}});
+    setInitialValues({nothing: []})
+    formik.resetForm({values: {nothing: []}});
   };
   return (
     <Form>
@@ -56,10 +103,7 @@ const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) 
         // disabled
         onChange={console.log}
         selectAll
-        options={[
-          { label: "something", value: true},
-          { label: "something else", name: "somethingElse" }
-        ]}
+        options={options}
         name="nothing"
         label="Nothing"
       />
