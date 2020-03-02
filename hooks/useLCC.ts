@@ -6,17 +6,18 @@ const useLCC = (
   ) => PromiseLike<{ type: string; payload: any } | void> | void
 ) => {
   const lccRef = useRef<any>(null);
+  if (typeof window !== "object") return [() => Promise.resolve()];
   useEffect(() => {
-    if (typeof window === "object")
-      import("lightning-container")
-        .then(module => (lccRef.current = module.default))
-        .then(() => {
-          if (messageFunction) {
-            lccRef.current.addMessageHandler(messageFunction);
-          }
-        });
+    import("lightning-container")
+      .then(module => (lccRef.current = module.default))
+      .then(() => {
+        if (messageFunction) {
+          lccRef.current.addMessageHandler(messageFunction);
+        }
+      });
     if (messageFunction)
       return () => {
+        if (!lccRef.current) return;
         if (typeof window === "object")
           lccRef.current.removeMessageHandler(messageFunction);
       };
@@ -27,12 +28,13 @@ const useLCC = (
       if (typeof window !== "object") resolve();
       if (returnMessageType) {
         const messageHandler = (message: any) => {
-          if (message.type === returnMessageType) {
+          if (message.type === returnMessageType && lccRef.current) {
             lccRef.current.removeMessageHandler(messageHandler);
             resolve(message);
           }
         };
-        lccRef.current.addMessageHandler(messageHandler);
+        if (lccRef.current) lccRef.current.addMessageHandler(messageHandler);
+        else resolve();
       }
 
       lccRef.current.sendMessage(message);
