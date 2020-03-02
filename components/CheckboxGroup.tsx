@@ -117,7 +117,6 @@ const SelectAll = ({
       if (!option.disabled) fieldValues.push(option.name || option.label);
       if (!option.disabled) {
         if (e.target.name === (option.name || option.label)) {
-          console.log(e.target.name);
           if (e.target.checked) optionList.push(e.target.name);
         } else if (option.value) optionList.push(option.name || option.label);
       }
@@ -210,7 +209,6 @@ const SelectAll = ({
       });
     }
     if (JSON.stringify(field.value) !== JSON.stringify(fieldValuesArray)) {
-      console.log(fieldValuesArray);
       field.onChange({
         target: {
           name,
