@@ -33,7 +33,7 @@ const useLCC = (
       }
 
       lccRef.current.sendMessage(message);
-      if (window.parent)
+      if (typeof window === "object" && window.parent)
         window.parent.postMessage(message, window.location.origin);
       // setSentMessages(sentMessages.concat(message));
       if (!returnMessageType) {
