@@ -85,12 +85,6 @@ const convertUTCtoLocale = (date: any) => {
   if (isISO(date)) {
     const newDate = new Date(date);
 
-    const finalDate = new Date(
-      newDate.getUTCFullYear(),
-      newDate.getUTCMonth(),
-      newDate.getUTCDate()
-    );
-
     return new Date(
       newDate.getUTCFullYear(),
       newDate.getUTCMonth(),
