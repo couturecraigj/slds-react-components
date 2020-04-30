@@ -79,11 +79,11 @@ const useCalendar = (date?: any): any => {
   const todaysDate = new Date();
   const [selectedDate, setSelectedDate] = useState(date && new Date(date));
   const [visibleDate, setVisibleDate] = useState(new Date(date || Date.now()));
-  const [previousMonthLength, setPreviousMonthLength] = useState();
-  const [visibleMonthYear, setVisibleMonthYear] = useState();
-  const [visibleMonthLength, setVisibleMonthLength] = useState();
-  const [visibleMonth, setVisibleMonth] = useState();
-  const [visibleMonthStartDay, setVisibleMonthStartDay] = useState();
+  const [previousMonthLength, setPreviousMonthLength] = useState<number>();
+  const [visibleMonthYear, setVisibleMonthYear] = useState<number>(visibleDate.getFullYear());
+  const [visibleMonthLength, setVisibleMonthLength] = useState<number>();
+  const [visibleMonth, setVisibleMonth] = useState<number>(visibleDate.getMonth());
+  const [visibleMonthStartDay, setVisibleMonthStartDay] = useState<number>();
   const chooseMonth = (year: number, month: number) => {
     const yearDate = new Date(year, month, visibleDate.getDate());
     moveToDate(yearDate);
@@ -160,6 +160,11 @@ const useCalendar = (date?: any): any => {
   ];
 };
 
+const getISODate = (date: Date) => {
+  const month = date.getMonth() + 1;
+  return date.getFullYear() + "-" + month + "-" + date.getDate();
+};
+
 const DateInput = ({
   label,
   required = false,
@@ -175,7 +180,7 @@ const DateInput = ({
   value?: string;
   yearsOptions?: number[];
 }) => {
-  const [isOpen, setIsOpen] = useState();
+  const [isOpen, setIsOpen] = useState<boolean>();
   const [field, meta] = useField(name);
   const [
     {
@@ -188,6 +193,7 @@ const DateInput = ({
     moveToDate,
     setDate
   ] = useCalendar(field.value || passedValue);
+  console.log(field.value);
   useEffect(() => {
     if (field.value) setDate(new Date(field.value));
   }, [field.value]);
@@ -338,11 +344,9 @@ const DateInput = ({
                         field.onChange({
                           target: {
                             name,
-                            value: new Date(
-                              day.year,
-                              day.month,
-                              day.day
-                            ).toLocaleDateString()
+                            value: getISODate(
+                              new Date(day.year, day.month, day.day)
+                            )
                           }
                         });
                         setIsOpen(false);
@@ -385,6 +389,11 @@ const DateInput = ({
           Today
         </button>
       </div>
+      {meta.touched && meta.error ? (
+        <div className="slds-form-element__help" id={`${name}-form-error`}>
+          {meta.error}
+        </div>
+      ) : null}
     </div>
   );
 };
