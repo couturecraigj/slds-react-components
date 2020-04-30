@@ -335,6 +335,7 @@ const convertUTCtoLocale = (date: any) => {
     ).toLocaleDateString('en-US');
   }
 
+  if (typeof window !== 'object') return date;
   if (typeof date === "string") {
     console.log(parseDate(date))
     return parseDate(date);
