@@ -222,8 +222,7 @@ const getFirstDay = (date: Date) => {
 };
 
 function parseDate(input: string) {
-  const lng: string =
-    window.navigator.userLanguage || window.navigator.language;
+  const lng: string = window.navigator.language;
 
   let format = formats[lng];
   if (!format) {
