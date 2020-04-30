@@ -15,6 +15,8 @@ const getTotalDaysInMonth = (date: Date, add = 1) => {
   return selectedDate.getDate();
 };
 
+
+
 const getDays = (
   previousMonthLength: number,
   visibleMonthStartDay: number,
@@ -79,11 +81,11 @@ const useCalendar = (date?: any): any => {
   const todaysDate = new Date();
   const [selectedDate, setSelectedDate] = useState(date && new Date(date));
   const [visibleDate, setVisibleDate] = useState(new Date(date || Date.now()));
-  const [previousMonthLength, setPreviousMonthLength] = useState<number>();
+  const [previousMonthLength, setPreviousMonthLength] = useState<number>(getTotalDaysInMonth(visibleDate, 0));
   const [visibleMonthYear, setVisibleMonthYear] = useState<number>(visibleDate.getFullYear());
-  const [visibleMonthLength, setVisibleMonthLength] = useState<number>();
+  const [visibleMonthLength, setVisibleMonthLength] = useState<number>(getTotalDaysInMonth(visibleDate));
   const [visibleMonth, setVisibleMonth] = useState<number>(visibleDate.getMonth());
-  const [visibleMonthStartDay, setVisibleMonthStartDay] = useState<number>();
+  const [visibleMonthStartDay, setVisibleMonthStartDay] = useState<number>(getFirstDay(visibleDate));
   const chooseMonth = (year: number, month: number) => {
     const yearDate = new Date(year, month, visibleDate.getDate());
     moveToDate(yearDate);
