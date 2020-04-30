@@ -15,8 +15,6 @@ const getTotalDaysInMonth = (date: Date, add = 1) => {
   return selectedDate.getDate();
 };
 
-
-
 const getDays = (
   previousMonthLength: number,
   visibleMonthStartDay: number,
@@ -77,15 +75,52 @@ const getMonthLabel = (month: number) => {
   return date.toLocaleDateString(undefined, { month: "long" });
 };
 
+const isISO = (date: any) => {
+  if (typeof date !== "string") return false;
+  if (/\d{4}-[01]\d-[0-3]\d/.test(date)) return true;
+  return false;
+};
+
+const convertUTCtoLocale = (date: any) => {
+  if (isISO(date)) {
+    const newDate = new Date(date);
+
+    const finalDate = new Date(
+      newDate.getUTCFullYear(),
+      newDate.getUTCMonth(),
+      newDate.getUTCDate()
+    );
+
+    return new Date(
+      newDate.getUTCFullYear(),
+      newDate.getUTCMonth(),
+      newDate.getUTCDate()
+    ).toLocaleDateString();
+  }
+  return date;
+};
+
 const useCalendar = (date?: any): any => {
   const todaysDate = new Date();
   const [selectedDate, setSelectedDate] = useState(date && new Date(date));
-  const [visibleDate, setVisibleDate] = useState(new Date(date || Date.now()));
-  const [previousMonthLength, setPreviousMonthLength] = useState<number>(getTotalDaysInMonth(visibleDate, 0));
-  const [visibleMonthYear, setVisibleMonthYear] = useState<number>(visibleDate.getFullYear());
-  const [visibleMonthLength, setVisibleMonthLength] = useState<number>(getTotalDaysInMonth(visibleDate));
-  const [visibleMonth, setVisibleMonth] = useState<number>(visibleDate.getMonth());
-  const [visibleMonthStartDay, setVisibleMonthStartDay] = useState<number>(getFirstDay(visibleDate));
+  const [visibleDate, setVisibleDate] = useState(
+    new Date(convertUTCtoLocale(date) || Date.now())
+  );
+  const [previousMonthLength, setPreviousMonthLength] = useState<number>(
+    getTotalDaysInMonth(visibleDate, 0)
+  );
+  const [visibleMonthYear, setVisibleMonthYear] = useState<number>(
+    visibleDate.getFullYear()
+  );
+  const [visibleMonthLength, setVisibleMonthLength] = useState<number>(
+    getTotalDaysInMonth(visibleDate)
+  );
+  const [visibleMonth, setVisibleMonth] = useState<number>(
+    visibleDate.getMonth()
+  );
+  const [visibleMonthStartDay, setVisibleMonthStartDay] = useState<number>(
+    getFirstDay(visibleDate)
+  );
   const chooseMonth = (year: number, month: number) => {
     const yearDate = new Date(year, month, visibleDate.getDate());
     moveToDate(yearDate);
@@ -158,13 +193,19 @@ const useCalendar = (date?: any): any => {
       }
     },
     moveToDate,
-    setSelectedDate
+    (date: any) => setSelectedDate(date)
   ];
 };
 
 const getISODate = (date: Date) => {
   const month = date.getMonth() + 1;
-  return date.getFullYear() + "-" + month + "-" + date.getDate();
+  const dateString =
+    date.getFullYear() +
+    "-" +
+    ("" + month).padStart(2, "0") +
+    "-" +
+    ("" + date.getDate()).padStart(2, "0");
+  return dateString;
 };
 
 const DateInput = ({
@@ -195,9 +236,11 @@ const DateInput = ({
     moveToDate,
     setDate
   ] = useCalendar(field.value || passedValue);
-  console.log(field.value);
+
   useEffect(() => {
-    if (field.value) setDate(new Date(field.value));
+    if (field.value) {
+      setDate(new Date(convertUTCtoLocale(field.value)));
+    }
   }, [field.value]);
   return (
     <div
