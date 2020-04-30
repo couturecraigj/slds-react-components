@@ -47,7 +47,7 @@ const validateDate = Yup.object().shape({
 })
 export const withInitialValuesChange = () => {
 
-  const [initialValues, setInitialValues] = useState({ date: '' });
+  const [initialValues, setInitialValues] = useState({ date: '2.12.2020' });
   
   return (
     <Layout>
