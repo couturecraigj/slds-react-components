@@ -1,5 +1,5 @@
 import parseDate from "./parseDate";
-
+const windowDefined = typeof window === 'object'
 const getFirstDay = (date: Date) => {
   const selectedDate = new Date(date);
   selectedDate.setDate(1);
@@ -8,6 +8,7 @@ const getFirstDay = (date: Date) => {
 };
 
 const getLocale = () => {
+  if (!windowDefined) return;
   const lng = window.navigator.language;
 
   return lng;
@@ -100,7 +101,7 @@ const convertUTCtoLocale = (date: any) => {
     ).toLocaleDateString("en-US");
   }
 
-  if (typeof window !== "object") return date;
+  if (!windowDefined) return date;
   if (typeof date === "string") {
     return parseDate(date)?.toLocaleDateString("en-US");
   }
@@ -120,6 +121,7 @@ const getISODate = (date: Date) => {
 };
 
 export {
+  windowDefined,
   getWeeks,
   getMonthLabel,
   getDays,
