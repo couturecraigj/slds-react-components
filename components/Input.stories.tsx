@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
-import Input from "./Input";
+import { Formik, Form, useFormikContext } from "formik";
 import Layout from "./Layout";
+import Input from "./Input";
 
 export default { title: "Input" };
 
@@ -24,7 +24,7 @@ export const dateInput = () => (
 const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) => {
   const formik = useFormikContext();
   const onReset = () => {
-    setInitialValues({nothing: []})
+    setInitialValues({date: '4.6.2020'})
     formik.resetForm({values: {nothing: []}});
   };
   return (
@@ -47,7 +47,7 @@ const validateDate = Yup.object().shape({
 })
 export const withInitialValuesChange = () => {
 
-  const [initialValues, setInitialValues] = useState({ date: '2.12.2020' });
+  const [initialValues, setInitialValues] = useState({ date: '2020-12-12' });
   
   return (
     <Layout>
