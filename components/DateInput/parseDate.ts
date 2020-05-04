@@ -14,6 +14,8 @@ const yyyy_M_d = "yyyy/M/d";
 const dd__MM__yy = "dd.MM.yy";
 const d_MM_yyyy = "d/MM/yyyy";
 
+const windowDefined = typeof window === 'object'
+
 const formats: { [key: string]: string } = {
   "af-ZA": yyyy_MM_dd,
   "am-ET": d_M_yyyy,
@@ -230,12 +232,16 @@ const formats: { [key: string]: string } = {
 
 let format: string;
 export const getFormat = () => {
+  if (!windowDefined) {
+    format = 'yyyy-MM-dd'
+    return;
+  }
   const lng: string = window.navigator.language;
   format = formats[lng];
   if (!format) {
     format =
       formats[Object.keys(formats).find(f => f.startsWith(lng)) || "p"] ||
-      "yyyy-mm-dd";
+      "yyyy-MM-dd";
   }
 }
 
