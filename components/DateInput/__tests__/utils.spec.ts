@@ -9,10 +9,7 @@ import {
   getISODate
 } from "../utils";
 
-let languageGetter;
-beforeEach(() => {
-  languageGetter = jest.spyOn(window.navigator, "language", "get");
-});
+
 describe("getFirstDay", () => {
   it("should get the first day of `2020-01-02`", () => {
     expect(getFirstDay(new Date(2020, 0, 2))).toEqual(3);
@@ -37,6 +34,10 @@ describe("getWeeks", () => {
   });
 });
 describe("getMonthLabel", () => {
+  let languageGetter;
+  beforeEach(() => {
+    languageGetter = jest.spyOn(window.navigator, "language", "get");
+  });
   it("should render February for US", () => {
     languageGetter.mockReturnValue("en-US");
     const label = getMonthLabel(1);

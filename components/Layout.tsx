@@ -17,7 +17,7 @@ const useSize = (
   const [sendMessage] = useLCC();
 
   const getSize = () => {
-    setTimeout(() => {
+    return setTimeout(() => {
       const windowHeight = getWindowHeight();
       if (
         windowHeight === divRef.current?.offsetHeight &&
@@ -28,19 +28,20 @@ const useSize = (
     }, 50);
   };
   useEffect(() => {
-    const timer = setTimeout(() => {
+    let timer = setTimeout(() => {
       sendMessage(
         { type: "size", payload: { height } },
         "height:" + height + ";"
-      ).then(() => getSize());
+      ).then(() => { timer = getSize()});
     }, 150);
     return () => clearTimeout(timer);
   }, [height]);
   useEffect(() => {
-    getSize();
+    const timer = getSize();
     window.addEventListener("resize", getSize);
     return () => {
       window.removeEventListener("resize", getSize);
+      clearTimeout(timer)
     };
   }, []);
   return [getSize, divRef];

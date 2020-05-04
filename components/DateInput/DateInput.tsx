@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
 import useCalendar from './hooks/useCalendar'
-import {convertUTCtoLocale, getISODate} from './utils'
 
 const DateInput = ({
   label,
@@ -33,11 +32,12 @@ const DateInput = ({
   ] = useCalendar(field.value || passedValue);
 
   useEffect(() => {
-    if (field.value) {
-      const newDate = new Date(convertUTCtoLocale(field.value));
-      setDate(newDate);
+    if (selected.ISOValue) {
+      const timer = setTimeout(() => field.onChange(selected.ISOValue), 10)
+      return () => clearTimeout(timer)
     }
-  }, [field.value]);
+    return () => {}
+  }, [selected.ISOValue]);
   return (
     <div
       data-testid="wrapper"
@@ -185,14 +185,6 @@ const DateInput = ({
                       key={index}
                       onClick={() => {
                         setDate(new Date(day.year, day.month, day.day));
-                        field.onChange({
-                          target: {
-                            name,
-                            value: getISODate(
-                              new Date(day.year, day.month, day.day)
-                            )
-                          }
-                        });
                         setIsOpen(false);
                       }}
                       aria-selected={

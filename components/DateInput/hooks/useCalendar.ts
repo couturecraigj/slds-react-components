@@ -1,12 +1,18 @@
 import {useState, useEffect} from 'react'
-import {convertUTCtoLocale, getTotalDaysInMonth, getFirstDay, getDays, getWeeks, getMonthLabel} from '../utils'
+import {convertUTCtoLocale, getTotalDaysInMonth, getFirstDay, getDays, getWeeks, getMonthLabel, getISODate} from '../utils'
+import {toLocale} from '../parseDate'
 
 const useCalendar = (date?: any): any => {
   const todaysDate = new Date();
-  const [selectedDate, setSelectedDate] = useState(date && new Date(convertUTCtoLocale(date)));
+  const [selectedDate, setSelectedDate] = useState(date && new Date(convertUTCtoLocale(date, true)));
   const [visibleDate, setVisibleDate] = useState(
     new Date(convertUTCtoLocale(date) || Date.now())
   );
+  const handleSelectDate = (date: Date) => {
+    date = date && new Date(convertUTCtoLocale(date, true))
+    setSelectedDate(date);
+    // setSelectedISODate(date && new Date(getISODate(date)))
+  }
   const [previousMonthLength, setPreviousMonthLength] = useState<number>(
     getTotalDaysInMonth(visibleDate, 0)
   );
@@ -79,7 +85,8 @@ const useCalendar = (date?: any): any => {
         year: selectedDate && selectedDate.getFullYear(),
         month: selectedDate && selectedDate.getMonth(),
         day: selectedDate && selectedDate.getDate(),
-        value: selectedDate ? selectedDate.toLocaleDateString() : ""
+        value: selectedDate ? toLocale(selectedDate) : "",
+        ISOValue: getISODate(selectedDate)
       },
       days,
       weeks,
@@ -94,7 +101,7 @@ const useCalendar = (date?: any): any => {
       }
     },
     moveToDate,
-    (date: any) => setSelectedDate(convertUTCtoLocale(date) )
+    handleSelectDate
   ];
 };
 

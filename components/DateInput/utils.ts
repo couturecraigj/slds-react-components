@@ -1,4 +1,4 @@
-import parseDate from "./parseDate";
+import parseDate, {toLocale} from "./parseDate";
 const windowDefined = typeof window === 'object'
 const getFirstDay = (date: Date) => {
   const selectedDate = new Date(date);
@@ -7,7 +7,7 @@ const getFirstDay = (date: Date) => {
   return selectedDate.getDay();
 };
 
-const getLocale = () => {
+export const getLocale = () => {
   if (!windowDefined) return;
   const lng = window.navigator.language;
 
@@ -90,26 +90,29 @@ const isISO = (date: any) => {
   return false;
 };
 
-const convertUTCtoLocale = (date: any) => {
+const convertUTCtoLocale = (date: any, english = false) => {
   if (isISO(date)) {
     const newDate = new Date(date);
 
-    return new Date(
+    return toLocale(new Date(
       newDate.getUTCFullYear(),
       newDate.getUTCMonth(),
       newDate.getUTCDate()
-    ).toLocaleDateString("en-US");
+    ));
   }
 
   if (!windowDefined) return date;
   if (typeof date === "string") {
-    return parseDate(date)?.toLocaleDateString("en-US");
+    const newDate = parseDate(date);
+    if (english) return newDate?.toLocaleDateString('en-US')
+    return toLocale(newDate);
   }
 
   return date;
 };
 
-const getISODate = (date: Date) => {
+const getISODate = (date?: Date) => {
+  if (!date) return '';
   const month = date.getMonth() + 1;
   const dateString =
     date.getFullYear() +
