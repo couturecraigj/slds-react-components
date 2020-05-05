@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import { Formik, Form } from "formik";
+import { Formik, Form, useFormikContext } from "formik";
 import Layout from "../../Layout";
 import { render, fireEvent, screen } from "@testing-library/react";
 import DateInput from "../DateInput";
@@ -122,6 +122,32 @@ describe("DateInput", () => {
     );
     const calendar = screen.getByTestId(/tbody/i);
     expect(Array.from(calendar.childNodes).length).toEqual(6);
+  });
+  it("should change values when reset", () => {
+    const ResetButton = () => {
+      const { resetForm } = useFormikContext();
+      return (
+        <button
+          data-testid="reset-button"
+          onClick={e => {
+            e.preventDefault();
+            resetForm({ values: { date: "2020-05-03" } });
+          }}
+        >
+          Reset
+        </button>
+      );
+    };
+    render(
+      <Wrapper initialValue="2020-05-31">
+        <DateInput name="date" label="Date" />
+        <ResetButton />
+      </Wrapper>
+    );
+
+    fireEvent.click(screen.getByTestId(/reset-button/i));
+    const input = screen.getByTestId(/date-input/i) as HTMLInputElement;
+    expect(input.value).toEqual("03.05.2020");
   });
 });
 test.todo("get all the functions working");

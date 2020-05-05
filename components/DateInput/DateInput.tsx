@@ -19,6 +19,7 @@ const DateInput = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>();
   const [field, meta] = useField(name);
+  const [previousFieldValue, setPreviousFieldValue] = useState(field.value);
 
   const [
     {
@@ -33,12 +34,27 @@ const DateInput = ({
   ] = useCalendar(field.value || passedValue);
 
   useEffect(() => {
-    if (selected.ISOValue) {
-      const timer = setTimeout(() => field.onChange(selected.ISOValue), 10);
-      return () => clearTimeout(timer);
+    if (
+      selected.ISOValue ||
+      (field.value && field.value !== selected.ISOValue)
+    ) {
+      if (field.value === previousFieldValue) {
+        setPreviousFieldValue(selected.ISOValue);
+        field.onChange(selected.ISOValue);
+      }
+      if (selected.ISOValue === previousFieldValue) {
+        setPreviousFieldValue(field.value);
+        const newDate = new Date(field.value);
+        setDate(
+          new Date(
+            newDate.getUTCFullYear(),
+            newDate.getUTCMonth(),
+            newDate.getUTCDate()
+          )
+        );
+      }
     }
-    return () => {};
-  }, [selected.ISOValue]);
+  }, [selected.ISOValue, field.value]);
   return (
     <div
       data-testid="wrapper"
