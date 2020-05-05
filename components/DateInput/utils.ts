@@ -1,10 +1,10 @@
-import parseDate, {toLocale} from "./parseDate";
-const windowDefined = typeof window === 'object'
+import parseDate, { toLocale } from "./parseDate";
+const windowDefined = typeof window === "object";
 const getFirstDay = (date: Date) => {
   const selectedDate = new Date(date);
-  selectedDate.setDate(1);
+  selectedDate.setUTCDate(1);
   // 0 is Sunday 6 is Saturday
-  return selectedDate.getDay();
+  return selectedDate.getUTCDay();
 };
 
 export const getLocale = () => {
@@ -16,9 +16,9 @@ export const getLocale = () => {
 
 const getTotalDaysInMonth = (date: Date, add = 1) => {
   const selectedDate = new Date(date);
-  selectedDate.setMonth(selectedDate.getMonth() + add);
-  selectedDate.setDate(0);
-  return selectedDate.getDate();
+  selectedDate.setUTCMonth(selectedDate.getUTCMonth() + add);
+  selectedDate.setUTCDate(0);
+  return selectedDate.getUTCDate();
 };
 
 const getDays = (
@@ -35,7 +35,7 @@ const getDays = (
     result.push({
       day: i,
       incrementMonth: -1,
-
+      month: visibleMonth === 0 ? 11 : visibleMonth - 1,
       year: visibleMonth === 0 ? visibleMonthYear - 1 : visibleMonthYear
     });
   }
@@ -53,7 +53,7 @@ const getDays = (
       result.push({
         day: i,
         incrementMonth: +1,
-
+        month: visibleMonth === 11 ? 0 : visibleMonth + 1,
         year: visibleMonth === 11 ? visibleMonthYear + 1 : visibleMonthYear
       });
     }
@@ -93,18 +93,21 @@ const isISO = (date: any) => {
 const convertUTCtoLocale = (date: any, english = false) => {
   if (isISO(date)) {
     const newDate = new Date(date);
-
-    return toLocale(new Date(
-      newDate.getUTCFullYear(),
-      newDate.getUTCMonth(),
-      newDate.getUTCDate()
-    ));
+    
+    const finalDate = toLocale(
+      new Date(
+        newDate.getUTCFullYear(),
+        newDate.getUTCMonth(),
+        newDate.getUTCDate()
+      )
+    );
+    return finalDate
   }
 
   if (!windowDefined) return date;
   if (typeof date === "string") {
     const newDate = parseDate(date);
-    if (english) return newDate?.toLocaleDateString('en-US')
+    if (english) return newDate?.toLocaleDateString("en-US");
     return toLocale(newDate);
   }
 
@@ -112,7 +115,7 @@ const convertUTCtoLocale = (date: any, english = false) => {
 };
 
 const getISODate = (date?: Date) => {
-  if (!date) return '';
+  if (!date) return "";
   const month = date.getMonth() + 1;
   const dateString =
     date.getFullYear() +

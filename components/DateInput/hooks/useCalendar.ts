@@ -1,35 +1,47 @@
-import {useState, useEffect} from 'react'
-import {convertUTCtoLocale, getTotalDaysInMonth, getFirstDay, getDays, getWeeks, getMonthLabel, getISODate} from '../utils'
-import {toLocale} from '../parseDate'
+import { useState, useEffect } from "react";
+import {
+  getTotalDaysInMonth,
+  getFirstDay,
+  getDays,
+  getWeeks,
+  getMonthLabel,
+  getISODate
+} from "../utils";
+import { toLocale } from "../parseDate";
 
 const useCalendar = (date?: any): any => {
   const todaysDate = new Date();
-  const [selectedDate, setSelectedDate] = useState(date && new Date(convertUTCtoLocale(date, true)));
+  const [selectedDate, setSelectedDate] = useState(
+    date && new Date((date))
+  );
   const [visibleDate, setVisibleDate] = useState(
-    new Date(convertUTCtoLocale(date) || Date.now())
+    new Date((date) || Date.now())
   );
   const handleSelectDate = (date: Date) => {
-    date = date && new Date(convertUTCtoLocale(date, true))
+    date = date && new Date(getISODate(date));
     setSelectedDate(date);
+    moveToDate(date)
     // setSelectedISODate(date && new Date(getISODate(date)))
-  }
+  };
   const [previousMonthLength, setPreviousMonthLength] = useState<number>(
     getTotalDaysInMonth(visibleDate, 0)
   );
   const [visibleMonthYear, setVisibleMonthYear] = useState<number>(
-    visibleDate.getFullYear()
+    visibleDate.getUTCFullYear()
   );
+  
   const [visibleMonthLength, setVisibleMonthLength] = useState<number>(
     getTotalDaysInMonth(visibleDate)
   );
+
   const [visibleMonth, setVisibleMonth] = useState<number>(
-    visibleDate.getMonth()
+    visibleDate.getUTCMonth()
   );
   const [visibleMonthStartDay, setVisibleMonthStartDay] = useState<number>(
     getFirstDay(visibleDate)
   );
   const chooseMonth = (year: number, month: number) => {
-    const yearDate = new Date(year, month, visibleDate.getDate());
+    const yearDate = new Date(year, month, visibleDate.getUTCDate());
     moveToDate(yearDate);
   };
   const incrementMonth = (increment: number) => {
@@ -38,8 +50,8 @@ const useCalendar = (date?: any): any => {
   const chooseYear = (year: number) => {
     const yearDate = new Date(
       year,
-      visibleDate.getMonth(),
-      visibleDate.getDate()
+      visibleDate.getUTCMonth(),
+      visibleDate.getUTCDate()
     );
     moveToDate(yearDate);
   };
@@ -48,7 +60,7 @@ const useCalendar = (date?: any): any => {
   };
   const moveToDate = (date: Date) => {
     setVisibleDate(new Date(date));
-    setVisibleMonth(date.getMonth());
+    setVisibleMonth(date.getUTCMonth());
     setVisibleMonthStartDay(getFirstDay(date));
     setVisibleMonthLength(getTotalDaysInMonth(date));
     setPreviousMonthLength(getTotalDaysInMonth(date, 0));
@@ -82,9 +94,9 @@ const useCalendar = (date?: any): any => {
         choose: chooseMonth
       },
       selected: {
-        year: selectedDate && selectedDate.getFullYear(),
-        month: selectedDate && selectedDate.getMonth(),
-        day: selectedDate && selectedDate.getDate(),
+        year: selectedDate && selectedDate.getUTCFullYear(),
+        month: selectedDate && selectedDate.getUTCMonth(),
+        day: selectedDate && selectedDate.getUTCDate(),
         value: selectedDate ? toLocale(selectedDate) : "",
         ISOValue: getISODate(selectedDate)
       },

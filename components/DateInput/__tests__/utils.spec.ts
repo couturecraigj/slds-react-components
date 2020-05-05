@@ -9,7 +9,6 @@ import {
   getISODate
 } from "../utils";
 
-
 describe("getFirstDay", () => {
   it("should get the first day of `2020-01-02`", () => {
     expect(getFirstDay(new Date(2020, 0, 2))).toEqual(3);

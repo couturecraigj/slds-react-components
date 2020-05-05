@@ -19,6 +19,7 @@ const DateInput = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>();
   const [field, meta] = useField(name);
+
   const [
     {
       month: { visible: currentMonth, increment: incrementMonth },
@@ -33,6 +34,7 @@ const DateInput = ({
 
   useEffect(() => {
     if (selected.ISOValue) {
+
       const timer = setTimeout(() => field.onChange(selected.ISOValue), 10)
       return () => clearTimeout(timer)
     }
@@ -60,7 +62,7 @@ const DateInput = ({
           type="text"
           onFocus={() => setIsOpen(true)}
           id={id}
-          data-testid="input"
+          data-testid="date-input"
           value={selected.value}
           autoComplete="none"
           placeholder=" "
@@ -105,6 +107,7 @@ const DateInput = ({
               aria-atomic="true"
               aria-live="assertive"
               className="slds-align-middle"
+              data-testid="month"
               id="month"
             >
               {currentMonth.label}

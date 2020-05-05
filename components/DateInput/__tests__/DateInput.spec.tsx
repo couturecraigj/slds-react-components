@@ -41,7 +41,7 @@ describe("DateInput", () => {
         <DateInput name="date" label="Date" />
       </Wrapper>
     );
-    fireEvent.click(screen.getByTestId(/input/i));
+    fireEvent.click(screen.getByTestId(/date-input/i));
     jest.runAllTimers();
     expect(screen.getByTestId("wrapper").classList.contains("slds-is-open"));
   })
@@ -51,7 +51,7 @@ describe("DateInput", () => {
         <DateInput name="date" label="Date" />
       </Wrapper>
     );
-    const input = screen.getByTestId(/input/i) as HTMLInputElement
+    const input = screen.getByTestId(/date-input/i) as HTMLInputElement
     if (input)
     expect(input.value).toEqual('5/1/2020')
     fireEvent.click(input);
@@ -62,16 +62,51 @@ describe("DateInput", () => {
     languageGetter.mockReturnValue('de')
     getFormat()
     render(
-      <Wrapper initialValue="01.05.2020">
+      <Wrapper initialValue="2020-05-01">
         <DateInput name="date" label="Date" />
       </Wrapper>
     );
-    const input = screen.getByTestId(/input/i) as HTMLInputElement
+    const input = screen.getByTestId(/date-input/i) as HTMLInputElement
     if (input)
     expect(input.value).toEqual('01.05.2020')
     fireEvent.click(input);
     const calendar = screen.getByTestId(/tbody/i);
+    const month = screen.getByTestId(/month/i);
+    expect(month.innerHTML).toEqual('May')
     expect(Array.from(calendar.childNodes).length).toEqual(6);
   });
+  it('should render the date when passed ISO style date', () => {
+    languageGetter.mockReturnValue('en-US');
+    getFormat()
+    render(
+      <Wrapper initialValue="2020-05-04">
+        <DateInput name="date" label="Date" />
+      </Wrapper>
+    );
+    const input = screen.getByTestId(/date-input/i) as HTMLInputElement
+    expect(input.value).toEqual('5/4/2020')
+  })
+  it('should render the current month for en-US', () => {
+    languageGetter.mockReturnValue('en-US');
+    getFormat()
+    render(
+      <Wrapper initialValue="2020-05-04">
+        <DateInput name="date" label="Date" />
+      </Wrapper>
+    );
+    const input = screen.getByTestId(/month/i)
+    expect(input.innerHTML).toEqual('May')
+  })
+  it('should render the current month for de-DE', () => {
+    languageGetter.mockReturnValue('de-DE');
+    getFormat()
+    render(
+      <Wrapper initialValue="2020-05-04">
+        <DateInput name="date" label="Date" />
+      </Wrapper>
+    );
+    const input = screen.getByTestId(/month/i)
+    expect(input.innerHTML).toEqual('May')
+  })
 });
 test.todo('get all the functions working')

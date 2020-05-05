@@ -1,3 +1,5 @@
+import { isISO } from "./utils";
+
 const d__M__yyyy = "d.M.yyyy";
 const dd_MM_yy = "dd/MM/yy";
 const dd_MM_yyyy = "dd/MM/yyyy";
@@ -14,7 +16,7 @@ const yyyy_M_d = "yyyy/M/d";
 const dd__MM__yy = "dd.MM.yy";
 const d_MM_yyyy = "d/MM/yyyy";
 
-const windowDefined = typeof window === 'object'
+const windowDefined = typeof window === "object";
 
 const formats: { [key: string]: string } = {
   "af-ZA": yyyy_MM_dd,
@@ -229,11 +231,10 @@ const formats: { [key: string]: string } = {
   "zu-ZA": yyyy_MM_dd
 };
 
-
 let format: string;
 export const getFormat = () => {
   if (!windowDefined) {
-    format = 'yyyy-MM-dd'
+    format = "yyyy-MM-dd";
     return;
   }
   const lng: string = window.navigator.language;
@@ -243,16 +244,41 @@ export const getFormat = () => {
       formats[Object.keys(formats).find(f => f.startsWith(lng)) || "p"] ||
       "yyyy-MM-dd";
   }
-}
+};
+
+const doesStringMatchFormat = (input: string) => {
+  if (!input) return false;
+  const regex = new RegExp(
+    format
+      .replace("MM", "\\p\\p")
+      .replace(/yy/gi, "\\p\\p")
+      .replace("dd", "\\p\\p")
+      .replace(/(d|M)/gi, "\\d{1,2}")
+      .replace(/p/gi, "d")
+  );
+  const match = regex.test(input);
+  if (!match) {
+    if (!isISO(input)) throw new Error("format does not match");
+  }
+  return match;
+};
 
 export default function parseDate(input: string) {
   if (!format) {
-    getFormat()
+    getFormat();
+  }
+  if (!doesStringMatchFormat(input)) {
+    const newDate = new Date(input);
+
+    return new Date(
+      newDate.getUTCFullYear(),
+      newDate.getUTCMonth(),
+      newDate.getUTCDate()
+    );
   }
   var parts = input.match(/(\d+)/g),
     i = 0,
     fmt: { [key: string]: number } = {};
-  // extract date-part indexes from the format
   format.replace(/(y+|d+|M+)/g, function(part: string) {
     fmt[part.charAt(0)] = i++;
     return part;
@@ -263,7 +289,6 @@ export default function parseDate(input: string) {
   const month: number = fmt["M"];
   const day: number = fmt["d"];
   if (day === undefined || month === undefined || year === undefined) return;
-  // console.log(parts, format, fmt, input, [+parts[year], +parts[month] - 1, +parts[day]])
   return new Date(+parts[year], +parts[month] - 1, +parts[day]);
 }
 
@@ -271,16 +296,18 @@ export const toLocale = (date?: Date) => {
   if (!date) return;
   const string = date.toISOString();
   if (!format) {
-    getFormat()
+    getFormat();
   }
-  const [yearString, monthString, dayString] = string.replace(/T.+/gi, "").split("-");
+  const [yearString, monthString, dayString] = string
+    .replace(/T.+/gi, "")
+    .split("-");
   const monthValue = +monthString;
-  const dayValue = +dayString
+  const dayValue = +dayString;
   return format
     .replace("yyyy", yearString)
     .replace("yy", yearString.substr(2))
-    .replace('MM', monthString)
+    .replace("MM", monthString)
     .replace("M", "" + monthValue)
     .replace("dd", dayString)
-    .replace("d", ""+ dayValue);
+    .replace("d", "" + dayValue);
 };

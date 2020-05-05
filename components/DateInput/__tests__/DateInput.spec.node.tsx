@@ -39,4 +39,12 @@ describe("DateInput", () => {
     jest.runAllTimers();
     expect(renderedString).toBeDefined();
   });
+  it('should render the current month for en-US', () => {
+    const renderedString = ReactDOMServer.renderToString(
+      <Wrapper initialValue="2020-05-04">
+        <DateInput name="date" label="Date" />
+      </Wrapper>
+    );
+    // /input/renderedString
+  })
 });
