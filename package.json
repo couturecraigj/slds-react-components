@@ -18,7 +18,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "format": "prettier **/*.{page,cmp,html,js,ts,tsx,jsx,css} --write",
-    "declarations": "yarn build && tsc --declaration --outDir lib/ --emitDeclarationOnly --declarationMap",
+    "declarations": "yarn format && yarn build && tsc --declaration --outDir lib/ --emitDeclarationOnly --declarationMap",
     "reinstall": "yarn clean && yarn",
     "clean": "rimraf node_modules",
     "start": "webpack-dev-server --mode development --open --hot",

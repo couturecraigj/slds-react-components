@@ -30,17 +30,17 @@ const SortButtons = ({
     } else {
       setAsc(true);
     }
-    if(value.value !== newValue) setSelected(newValue);
+    if (value.value !== newValue) setSelected(newValue);
   };
   useEffect(() => {
     if (selected !== value.value || asc !== value.asc) {
       setValue({ value: selected, asc: asc });
     }
-  }, [selected, asc])
+  }, [selected, asc]);
   useEffect(() => {
     field.onChange({ target: { name, value } });
-    onChange(value)
-  }, [value])
+    onChange(value);
+  }, [value]);
   return (
     <div
       className={`slds-form-element ${meta.touched &&

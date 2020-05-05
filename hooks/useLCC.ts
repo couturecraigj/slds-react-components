@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 import LCC from "lightning-container";
 
-const useLCC = (messageFunction?: (message: any) => PromiseLike<{type: string, payload: any} | void> | void) => {
-  if (typeof window !== 'object') return [() => Promise.resolve()]
+const useLCC = (
+  messageFunction?: (
+    message: any
+  ) => PromiseLike<{ type: string; payload: any } | void> | void
+) => {
+  if (typeof window !== "object") return [() => Promise.resolve()];
   // const [sentMessages, setSentMessages] = useState([]);
   useEffect(() => {
     if (messageFunction) {

@@ -10,22 +10,20 @@ export const dateInput = () => (
   <Layout>
     <Formik onSubmit={console.log} initialValues={{ nothing: "" }}>
       <Form>
-        <Input
-          type="date"
-          name="nothing"
-          label="Nothing"
-        />
+        <Input type="date" name="nothing" label="Nothing" />
         <button type="submit">Submit</button>
       </Form>
     </Formik>
   </Layout>
 );
 
-const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) => {
+const InitialValuesChangeForm = ({
+  setInitialValues = (e?: any): any | void => {}
+}) => {
   const formik = useFormikContext();
   const onReset = () => {
-    setInitialValues({date: '4.6.2020'})
-    formik.resetForm({values: {nothing: []}});
+    setInitialValues({ date: "4.6.2020" });
+    formik.resetForm({ values: { nothing: [] } });
   };
   return (
     <Form>
@@ -43,12 +41,11 @@ const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) 
   );
 };
 const validateDate = Yup.object().shape({
-  date: Yup.date().required('Need to enter a date')
-})
+  date: Yup.date().required("Need to enter a date")
+});
 export const withInitialValuesChange = () => {
+  const [initialValues, setInitialValues] = useState({ date: "2020-12-14" });
 
-  const [initialValues, setInitialValues] = useState({ date: '2020-12-14' });
-  
   return (
     <Layout>
       <Formik

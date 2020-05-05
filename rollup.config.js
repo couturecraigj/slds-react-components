@@ -63,37 +63,42 @@ const OUTPUT_DATA = [
   }
 ];
 
-const config = [{
-  input: 'service-worker.ts',
-  // inlineDynamicImports: true,
-  output: {
-    file: 'layout-sw.js',
-    format: 'es',
-    name: OUTPUT_NAME,
-    globals: GLOBALS
+const config = [
+  {
+    input: "service-worker.ts",
+    // inlineDynamicImports: true,
+    output: {
+      file: "layout-sw.js",
+      format: "es",
+      name: OUTPUT_NAME,
+      globals: GLOBALS
+    },
+    external: EXTERNAL,
+    plugins: PLUGINS
   },
-  external: EXTERNAL,
-  plugins: PLUGINS
-}, {
-  input: 'service-worker.ts',
-  output: {
-    file: 'dist/layout-sw.js',
-    format: 'es',
-    name: OUTPUT_NAME,
-    globals: GLOBALS
-  },
-  external: EXTERNAL,
-  plugins: PLUGINS
-}].concat(OUTPUT_DATA.map(({ file, format }) => ({
-  input: INPUT_FILE_PATH,
-  output: {
-    file,
-    format,
-    name: OUTPUT_NAME,
-    globals: GLOBALS
-  },
-  external: EXTERNAL,
-  plugins: PLUGINS
-})));
+  {
+    input: "service-worker.ts",
+    output: {
+      file: "dist/layout-sw.js",
+      format: "es",
+      name: OUTPUT_NAME,
+      globals: GLOBALS
+    },
+    external: EXTERNAL,
+    plugins: PLUGINS
+  }
+].concat(
+  OUTPUT_DATA.map(({ file, format }) => ({
+    input: INPUT_FILE_PATH,
+    output: {
+      file,
+      format,
+      name: OUTPUT_NAME,
+      globals: GLOBALS
+    },
+    external: EXTERNAL,
+    plugins: PLUGINS
+  }))
+);
 
 export default config;

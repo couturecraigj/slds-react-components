@@ -12,107 +12,41 @@
   <div id="lightning"></div>
 
   <script type="application/javascript">
-    var variables = JSON.parse("{!parametersString}");
-    var record = variables.Record;
-    var recordTypeId = variables.RecordTypeId;
-    var pathPrefix = "{!firstThreeRecordId}";
-    console.log(pathPrefix);
-    var currentUserContext = variables.Theme || "{!$User.UITheme}";
-    delete variables.Record;
-    delete variables.RecordTypeId;
-    if (variables.Theme) delete variables.Theme;
-    console.log(variables);
-    const initialValues = {};
-    if (currentUserContext.includes("Theme4")) {
-      if (recordTypeId) {
-        initialValues["RecordTypeId"] = recordTypeId;
-      }
-      const recordData = Object.entries(variables)
-        .map(function(entry) {
-          const key = entry[0];
-          const value = entry[1];
-          if (key[0].toLowerCase() === key[0]) {
-            // these are not passed variables
-            return;
-          }
-          if (key.startsWith("CF")) {
-            // these are not passed variables
-            return;
-          }
-          if (key.endsWith("_lkid")) {
-            // these are not passed variables
-            return;
-          }
-          if (!value) return;
-          const obj = {};
-          obj[key] = value;
-          return obj;
-        })
-        .filter(function(v) {
-          return v;
-        })
-        .reduce(function(previous, entry) {
-          return Object.assign(previous, entry);
-        }, initialValues);
-      console.log(JSON.parse(JSON.stringify(recordData)));
-      $Lightning.use("c:meta_createRecordApp", function() {
-        $Lightning.createComponent(
-          "c:meta_createRecord",
-          {
-            recordData: recordData,
-            record: record,
-            autoclose: true
-          },
-          "lightning",
-          function(component) {
-            console.log(component);
-            //sforce.console.getFocusedPrimaryTabId(console.log)
-            setTimeout(function() {
-              sforce.console.getEnclosingTabId(function(result) {
-                var tabId = result.id;
-                console.log("closing tabId " + tabId);
-                sforce.console.closeTab(tabId, function() {
-                  if (result.error) {
-                    alert("Error message is " + result.error);
-                  }
-                });
-              });
-            }, 500); //sforce.console.closeTab
-          }
-        );
-      });
-    } else {
-      var path =
-        "/" +
-        pathPrefix +
-        "/e?" +
-        (recordTypeId ? "RecordType=" + recordTypeId + "&" : "") +
-        "nooverride=1";
-      Object.entries(variables).forEach(function(entry) {
-        const key = entry[0];
-        const value = entry[1];
-        if (!value) return;
-        if (key.toLowerCase() === "returl") {
-          path = path + "&retURL=" + encodeURIComponent("/" + value);
-        }
-        if (key[0] !== key[0].toUpperCase()) return;
-        if (key.endsWith("__c")) return;
-        if (key.toLowerCase().startsWith("cf")) {
-          path = path + "&" + key + "=" + value;
-          return;
-        }
-        if (key.toLowerCase().endsWith("_lkid")) {
-          path = path + "&" + key + "=" + value;
-          return;
-        }
-        if (key.toLowerCase().endsWith("id")) {
-          path = path + "&" + key.toLowerCase().substring(0, 3) + "id=" + value;
-          return;
-        }
-        path = path + "&" + key + "=" + value;
-      });
-      console.log(path);
-      location.replace(path);
-    }
+    var variables = JSON.parse("{!parametersString}"); var record =
+    variables.Record; var recordTypeId = variables.RecordTypeId; var pathPrefix
+    = "{!firstThreeRecordId}"; console.log(pathPrefix); var currentUserContext =
+    variables.Theme || "{!$User.UITheme}"; delete variables.Record; delete
+    variables.RecordTypeId; if (variables.Theme) delete variables.Theme;
+    console.log(variables); const initialValues = {}; if
+    (currentUserContext.includes("Theme4")) { if (recordTypeId) {
+    initialValues["RecordTypeId"] = recordTypeId; } const recordData =
+    Object.entries(variables) .map(function(entry) { const key = entry[0]; const
+    value = entry[1]; if (key[0].toLowerCase() === key[0]) { // these are not
+    passed variables return; } if (key.startsWith("CF")) { // these are not
+    passed variables return; } if (key.endsWith("_lkid")) { // these are not
+    passed variables return; } if (!value) return; const obj = {}; obj[key] =
+    value; return obj; }) .filter(function(v) { return v; })
+    .reduce(function(previous, entry) { return Object.assign(previous, entry);
+    }, initialValues); console.log(JSON.parse(JSON.stringify(recordData)));
+    $Lightning.use("c:meta_createRecordApp", function() {
+    $Lightning.createComponent( "c:meta_createRecord", { recordData: recordData,
+    record: record, autoclose: true }, "lightning", function(component) {
+    console.log(component); //sforce.console.getFocusedPrimaryTabId(console.log)
+    setTimeout(function() { sforce.console.getEnclosingTabId(function(result) {
+    var tabId = result.id; console.log("closing tabId " + tabId);
+    sforce.console.closeTab(tabId, function() { if (result.error) { alert("Error
+    message is " + result.error); } }); }); }, 500); //sforce.console.closeTab }
+    ); }); } else { var path = "/" + pathPrefix + "/e?" + (recordTypeId ?
+    "RecordType=" + recordTypeId + "&" : "") + "nooverride=1";
+    Object.entries(variables).forEach(function(entry) { const key = entry[0];
+    const value = entry[1]; if (!value) return; if (key.toLowerCase() ===
+    "returl") { path = path + "&retURL=" + encodeURIComponent("/" + value); } if
+    (key[0] !== key[0].toUpperCase()) return; if (key.endsWith("__c")) return;
+    if (key.toLowerCase().startsWith("cf")) { path = path + "&" + key + "=" +
+    value; return; } if (key.toLowerCase().endsWith("_lkid")) { path = path +
+    "&" + key + "=" + value; return; } if (key.toLowerCase().endsWith("id")) {
+    path = path + "&" + key.toLowerCase().substring(0, 3) + "id=" + value;
+    return; } path = path + "&" + key + "=" + value; }); console.log(path);
+    location.replace(path); }
   </script>
 </apex:page>

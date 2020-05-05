@@ -32,7 +32,9 @@ const useSize = (
       sendMessage(
         { type: "size", payload: { height } },
         "height:" + height + ";"
-      ).then(() => { timer = getSize()});
+      ).then(() => {
+        timer = getSize();
+      });
     }, 150);
     return () => clearTimeout(timer);
   }, [height]);
@@ -41,7 +43,7 @@ const useSize = (
     window.addEventListener("resize", getSize);
     return () => {
       window.removeEventListener("resize", getSize);
-      clearTimeout(timer)
+      clearTimeout(timer);
     };
   }, []);
   return [getSize, divRef];

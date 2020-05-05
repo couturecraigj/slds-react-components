@@ -1,6 +1,6 @@
 const getWindowHeight = () => {
   let myHeight = 0;
-  if (typeof window !== 'object') return myHeight;
+  if (typeof window !== "object") return myHeight;
   if (typeof window.innerWidth == "number") {
     //Non-IE
     myHeight = window.innerHeight;

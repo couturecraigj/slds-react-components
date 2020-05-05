@@ -76,26 +76,31 @@ const options = [
     name: "excludeDeferredMX",
     value: true
   },
-  { label: "Search ALL Maintenance Records", name: "searchAllServiceMXRecords", value: false },
+  {
+    label: "Search ALL Maintenance Records",
+    name: "searchAllServiceMXRecords",
+    value: false
+  },
   { label: "Exclude fleet", name: "excludeFleet", value: true },
   {
-    label:
-      "Remember this query incase I reload the page (experimental)",
+    label: "Remember this query incase I reload the page (experimental)",
     name: "rememberMyPreviousSearch",
     value: false
-  // },
-  // {
-  //   label: "My internet connection is slow (experimental)",
-  //   name: "slowConnection",
-  //   value: false
+    // },
+    // {
+    //   label: "My internet connection is slow (experimental)",
+    //   name: "slowConnection",
+    //   value: false
   }
 ];
 
-const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) => {
+const InitialValuesChangeForm = ({
+  setInitialValues = (e?: any): any | void => {}
+}) => {
   const formik = useFormikContext();
   const onReset = () => {
-    setInitialValues({nothing: []})
-    formik.resetForm({values: {nothing: []}});
+    setInitialValues({ nothing: [] });
+    formik.resetForm({ values: { nothing: [] } });
   };
   return (
     <Form>
@@ -116,15 +121,11 @@ const InitialValuesChangeForm = ({setInitialValues = (e?:any): any|void => {}}) 
 };
 
 export const withInitialValuesChange = () => {
-
   const [initialValues, setInitialValues] = useState({ nothing: [] });
-  
+
   return (
     <Layout>
-      <Formik
-        onSubmit={console.log}
-        initialValues={initialValues}
-      >
+      <Formik onSubmit={console.log} initialValues={initialValues}>
         <InitialValuesChangeForm setInitialValues={setInitialValues} />
       </Formik>
     </Layout>

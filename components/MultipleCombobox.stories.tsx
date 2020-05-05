@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import MultipleCombobox from "./MultipleCombobox";
 import Layout from "./Layout";
@@ -25,30 +25,31 @@ export const withChosenValue = () => (
 );
 
 export const withChosenValueAndDelayedOptions = () => {
-  const [options, setOptions] = useState([])
+  const [options, setOptions] = useState([]);
   useEffect(() => {
     setTimeout(() => {
       setOptions([
         { label: "something", value: "try" },
         { label: "something else" }
-      ])
-    }, 300)
-  }, [])
+      ]);
+    }, 300);
+  }, []);
   return (
-  <Layout>
-    <Formik onSubmit={console.log} initialValues={{ nothing: ["try"] }}>
-      <Form>
-        <MultipleCombobox
-          onChange={(...args) => console.log(...args)}
-          options={options}
-          name="nothing"
-          label="Nothing"
-        />
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
-  </Layout>
-)};
+    <Layout>
+      <Formik onSubmit={console.log} initialValues={{ nothing: ["try"] }}>
+        <Form>
+          <MultipleCombobox
+            onChange={(...args) => console.log(...args)}
+            options={options}
+            name="nothing"
+            label="Nothing"
+          />
+          <button type="submit">Submit</button>
+        </Form>
+      </Formik>
+    </Layout>
+  );
+};
 
 export const withoutChosenValue = () => (
   <Layout>
@@ -70,28 +71,29 @@ export const withoutChosenValue = () => (
 );
 
 export const withChosenValueAndDelayedOptionsAndSearch = () => {
-  const [options, setOptions] = useState([])
+  const [options, setOptions] = useState([]);
   useEffect(() => {
     setTimeout(() => {
       setOptions([
         { label: "something", value: "try" },
         { label: "something else" }
-      ])
-    }, 300)
-  }, [])
+      ]);
+    }, 300);
+  }, []);
   return (
-  <Layout>
-    <Formik onSubmit={console.log} initialValues={{ nothing: ["try"] }}>
-      <Form>
-        <MultipleCombobox
-          onChange={(...args) => console.log(...args)}
-          filterable
-          options={options}
-          name="nothing"
-          label="Nothing"
-        />
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
-  </Layout>
-)};
+    <Layout>
+      <Formik onSubmit={console.log} initialValues={{ nothing: ["try"] }}>
+        <Form>
+          <MultipleCombobox
+            onChange={(...args) => console.log(...args)}
+            filterable
+            options={options}
+            name="nothing"
+            label="Nothing"
+          />
+          <button type="submit">Submit</button>
+        </Form>
+      </Formik>
+    </Layout>
+  );
+};

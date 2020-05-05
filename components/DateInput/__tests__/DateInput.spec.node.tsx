@@ -1,25 +1,31 @@
 import "@testing-library/jest-dom";
 import React from "react";
-import ReactDOMServer from 'react-dom/server'
+import ReactDOMServer from "react-dom/server";
 import { Formik, Form } from "formik";
 import Layout from "../../Layout";
 import DateInput from "../DateInput";
 
-const originalError = console.error
+const originalError = console.error;
 
 beforeAll(() => {
   console.error = (...args) => {
     if (/Warning.*not wrapped in act/.test(args[0])) {
-      return
+      return;
     }
-    originalError.call(console, ...args)
-  }
-})
+    originalError.call(console, ...args);
+  };
+});
 
 afterAll(() => {
-  console.error = originalError
-})
-const Wrapper = ({ children, initialValue }: {children: any, initialValue?: string}) => (
+  console.error = originalError;
+});
+const Wrapper = ({
+  children,
+  initialValue
+}: {
+  children: any;
+  initialValue?: string;
+}) => (
   <Layout>
     <Formik onSubmit={console.log} initialValues={{ date: initialValue }}>
       <Form>{children}</Form>
@@ -30,7 +36,7 @@ const Wrapper = ({ children, initialValue }: {children: any, initialValue?: stri
 
 describe("DateInput", () => {
   jest.useFakeTimers();
-  it ('should render', () => {
+  it("should render", () => {
     const renderedString = ReactDOMServer.renderToString(
       <Wrapper initialValue="">
         <DateInput name="date" label="Date" />
@@ -39,12 +45,12 @@ describe("DateInput", () => {
     jest.runAllTimers();
     expect(renderedString).toBeDefined();
   });
-  it('should render the current month for en-US', () => {
+  it("should render the current month for en-US", () => {
     const renderedString = ReactDOMServer.renderToString(
       <Wrapper initialValue="2020-05-04">
         <DateInput name="date" label="Date" />
       </Wrapper>
     );
     // /input/renderedString
-  })
+  });
 });

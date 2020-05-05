@@ -93,7 +93,7 @@ const isISO = (date: any) => {
 const convertUTCtoLocale = (date: any, english = false) => {
   if (isISO(date)) {
     const newDate = new Date(date);
-    
+
     const finalDate = toLocale(
       new Date(
         newDate.getUTCFullYear(),
@@ -101,7 +101,7 @@ const convertUTCtoLocale = (date: any, english = false) => {
         newDate.getUTCDate()
       )
     );
-    return finalDate
+    return finalDate;
   }
 
   if (!windowDefined) return date;

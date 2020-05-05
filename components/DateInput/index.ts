@@ -1,2 +1,2 @@
-import DateInput from './DateInput'
+import DateInput from "./DateInput";
 export default DateInput;

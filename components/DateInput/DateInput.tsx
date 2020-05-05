@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useField } from "formik";
-import useCalendar from './hooks/useCalendar'
+import useCalendar from "./hooks/useCalendar";
 
 const DateInput = ({
   label,
@@ -34,11 +34,10 @@ const DateInput = ({
 
   useEffect(() => {
     if (selected.ISOValue) {
-
-      const timer = setTimeout(() => field.onChange(selected.ISOValue), 10)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => field.onChange(selected.ISOValue), 10);
+      return () => clearTimeout(timer);
     }
-    return () => {}
+    return () => {};
   }, [selected.ISOValue]);
   return (
     <div

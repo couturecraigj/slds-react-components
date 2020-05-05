@@ -11,16 +11,12 @@ import { toLocale } from "../parseDate";
 
 const useCalendar = (date?: any): any => {
   const todaysDate = new Date();
-  const [selectedDate, setSelectedDate] = useState(
-    date && new Date((date))
-  );
-  const [visibleDate, setVisibleDate] = useState(
-    new Date((date) || Date.now())
-  );
+  const [selectedDate, setSelectedDate] = useState(date && new Date(date));
+  const [visibleDate, setVisibleDate] = useState(new Date(date || Date.now()));
   const handleSelectDate = (date: Date) => {
     date = date && new Date(getISODate(date));
     setSelectedDate(date);
-    moveToDate(date)
+    moveToDate(date);
     // setSelectedISODate(date && new Date(getISODate(date)))
   };
   const [previousMonthLength, setPreviousMonthLength] = useState<number>(
@@ -29,7 +25,7 @@ const useCalendar = (date?: any): any => {
   const [visibleMonthYear, setVisibleMonthYear] = useState<number>(
     visibleDate.getUTCFullYear()
   );
-  
+
   const [visibleMonthLength, setVisibleMonthLength] = useState<number>(
     getTotalDaysInMonth(visibleDate)
   );

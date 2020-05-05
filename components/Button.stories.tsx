@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import Button from "./Button";
 import Layout from "./Layout";
 import Context from "./Context";
@@ -16,9 +16,13 @@ export const withEmoji = () => (
 );
 
 const ButtonWithLayout = () => {
-  const {changeSize} = useContext(Context)
-  return <Button onClick={changeSize} variant="brand">With Layout</Button>
-}
+  const { changeSize } = useContext(Context);
+  return (
+    <Button onClick={changeSize} variant="brand">
+      With Layout
+    </Button>
+  );
+};
 
 export const withLayout = () => (
   <Layout>
