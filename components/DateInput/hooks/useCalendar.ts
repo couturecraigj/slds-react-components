@@ -60,7 +60,7 @@ const useCalendar = (date?: any): any => {
     setVisibleMonthStartDay(getFirstDay(date));
     setVisibleMonthLength(getTotalDaysInMonth(date));
     setPreviousMonthLength(getTotalDaysInMonth(date, 0));
-    setVisibleMonthYear(date.getFullYear());
+    setVisibleMonthYear(date.getUTCFullYear());
   };
 
   const days = getDays(
@@ -103,9 +103,9 @@ const useCalendar = (date?: any): any => {
         increment: incrementYear
       },
       today: {
-        year: todaysDate.getFullYear(),
-        month: todaysDate.getMonth(),
-        day: todaysDate.getDate()
+        year: todaysDate.getUTCFullYear(),
+        month: todaysDate.getUTCMonth(),
+        day: todaysDate.getUTCDate()
       }
     },
     moveToDate,

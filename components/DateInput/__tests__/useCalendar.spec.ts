@@ -65,4 +65,13 @@ describe("useCalendar", () => {
     expect(calendar.month.visible.label).toEqual("May");
     expect(calendar.selected.month).toEqual(4);
   });
+  it("should render the correct amount of weeks at 2020-05-31", () => {
+    const {
+      result: {
+        current: [calendar]
+      }
+    } = renderHook(() => useCalendar(new Date(2020, 4, 31)));
+    expect(calendar.month.visible.length).toEqual(31);
+    expect(calendar.weeks.length).toEqual(6);
+  });
 });

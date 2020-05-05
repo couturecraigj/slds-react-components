@@ -16,6 +16,7 @@ export const getLocale = () => {
 
 const getTotalDaysInMonth = (date: Date, add = 1) => {
   const selectedDate = new Date(date);
+  selectedDate.setUTCDate(15);
   selectedDate.setUTCMonth(selectedDate.getUTCMonth() + add);
   selectedDate.setUTCDate(0);
   return selectedDate.getUTCDate();

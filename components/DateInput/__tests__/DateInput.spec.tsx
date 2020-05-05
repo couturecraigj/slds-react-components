@@ -112,5 +112,16 @@ describe("DateInput", () => {
     const input = screen.getByTestId(/month/i);
     expect(input.innerHTML).toEqual("May");
   });
+  it("should render the correct amount of weeks on 31.05.2020 for de-DE", () => {
+    languageGetter.mockReturnValue("de-DE");
+    getFormat();
+    render(
+      <Wrapper initialValue="2020-05-31">
+        <DateInput name="date" label="Date" />
+      </Wrapper>
+    );
+    const calendar = screen.getByTestId(/tbody/i);
+    expect(Array.from(calendar.childNodes).length).toEqual(6);
+  });
 });
 test.todo("get all the functions working");
