@@ -124,6 +124,8 @@ describe("DateInput", () => {
     expect(Array.from(calendar.childNodes).length).toEqual(6);
   });
   it("should change values when reset", () => {
+    languageGetter.mockReturnValue("de-DE");
+    getFormat();
     const ResetButton = () => {
       const { resetForm } = useFormikContext();
       return (

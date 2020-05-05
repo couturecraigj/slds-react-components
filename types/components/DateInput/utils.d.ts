@@ -13,5 +13,6 @@ declare const getMonthLabel: (month: number) => string;
 declare const isISO: (date: any) => boolean;
 declare const convertUTCtoLocale: (date: any, english?: boolean) => any;
 declare const getISODate: (date?: Date | undefined) => string;
-export { windowDefined, getWeeks, getMonthLabel, getDays, getTotalDaysInMonth, getFirstDay, convertUTCtoLocale, getISODate, isISO };
+declare const getUTCISODate: (date?: Date | undefined) => string;
+export { windowDefined, getWeeks, getMonthLabel, getDays, getTotalDaysInMonth, getFirstDay, convertUTCtoLocale, getISODate, getUTCISODate, isISO };
 //# sourceMappingURL=utils.d.ts.map

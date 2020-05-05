@@ -19,8 +19,6 @@ const DateInput = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>();
   const [field, meta] = useField(name);
-  const [previousFieldValue, setPreviousFieldValue] = useState(field.value);
-
   const [
     {
       month: { visible: currentMonth, increment: incrementMonth },
@@ -32,10 +30,12 @@ const DateInput = ({
     moveToDate,
     setDate
   ] = useCalendar(field.value || passedValue);
-
+  const [previousFieldValue, setPreviousFieldValue] = useState(
+    selected.ISOValue
+  );
   useEffect(() => {
     if (
-      (selected.ISOValue || field.value) &&
+      // (selected.ISOValue || field.value) &&
       field.value !== selected.ISOValue
     ) {
       if (field.value === previousFieldValue) {

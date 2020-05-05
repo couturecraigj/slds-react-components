@@ -127,6 +127,18 @@ const getISODate = (date?: Date) => {
   return dateString;
 };
 
+const getUTCISODate = (date?: Date) => {
+  if (!date) return "";
+  const month = date.getUTCMonth() + 1;
+  const dateString =
+    date.getUTCFullYear() +
+    "-" +
+    ("" + month).padStart(2, "0") +
+    "-" +
+    ("" + date.getUTCDate()).padStart(2, "0");
+  return dateString;
+};
+
 export {
   windowDefined,
   getWeeks,
@@ -136,5 +148,6 @@ export {
   getFirstDay,
   convertUTCtoLocale,
   getISODate,
+  getUTCISODate,
   isISO
 };

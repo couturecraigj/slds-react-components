@@ -5,7 +5,8 @@ import {
   getDays,
   getWeeks,
   getMonthLabel,
-  getISODate
+  getISODate,
+  getUTCISODate
 } from "../utils";
 import { toLocale } from "../parseDate";
 
@@ -94,7 +95,7 @@ const useCalendar = (date?: any): any => {
         month: selectedDate && selectedDate.getUTCMonth(),
         day: selectedDate && selectedDate.getUTCDate(),
         value: selectedDate ? toLocale(selectedDate) : "",
-        ISOValue: getISODate(selectedDate)
+        ISOValue: getUTCISODate(selectedDate)
       },
       days,
       weeks,
