@@ -35,8 +35,8 @@ const DateInput = ({
 
   useEffect(() => {
     if (
-      selected.ISOValue ||
-      (field.value && field.value !== selected.ISOValue)
+      (selected.ISOValue || field.value) &&
+      field.value !== selected.ISOValue
     ) {
       if (field.value === previousFieldValue) {
         setPreviousFieldValue(selected.ISOValue);
