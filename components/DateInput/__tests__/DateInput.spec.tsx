@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { Formik, Form, useFormikContext } from "formik";
 import Layout from "../../Layout";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import DateInput from "../DateInput";
 import { getFormat } from "../parseDate";
 
@@ -50,6 +50,53 @@ describe("DateInput", () => {
     fireEvent.click(screen.getByTestId(/date-input/i));
     jest.runAllTimers();
     expect(screen.getByTestId("wrapper").classList.contains("slds-is-open"));
+  });
+  it("should change value when button clicked", () => {
+    render(
+      <Wrapper initialValue="2020-05-05">
+        <DateInput name="date" label="Date" />
+      </Wrapper>
+    );
+    fireEvent.click(screen.getAllByTestId(/clickable-day/i)[0]);
+    expect(screen.getByTestId(/date-input/)).not.toEqual("5/5/2020");
+  });
+  it("should submit a different value when date changed", async () => {
+    const onSubmit = jest.fn();
+    let submit = () => {};
+    const form = (
+      <Formik initialValues={{ date: "2020-07-07" }} onSubmit={onSubmit}>
+        {({ submitForm }) => {
+          submit = submitForm;
+          return <DateInput name="date" label="Date" />;
+        }}
+      </Formik>
+    );
+    render(form);
+    await fireEvent.click(screen.getAllByTestId(/clickable-day/i)[0]);
+    await submit();
+    expect(onSubmit.mock.calls).toBeTruthy();
+    const input = screen.getByTestId(/date-input/) as HTMLInputElement;
+    expect(input.value).toEqual("6/28/2020");
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith(
+        { date: "2020-06-28" },
+        {
+          resetForm: expect.any(Function),
+          setErrors: expect.any(Function),
+          setFieldError: expect.any(Function),
+          setFieldTouched: expect.any(Function),
+          setFieldValue: expect.any(Function),
+          setFormikState: expect.any(Function),
+          setStatus: expect.any(Function),
+          setSubmitting: expect.any(Function),
+          setTouched: expect.any(Function),
+          setValues: expect.any(Function),
+          validateField: expect.any(Function),
+          validateForm: expect.any(Function),
+          submitForm: expect.any(Function)
+        }
+      )
+    );
   });
   it("should render `DateInput` with initialValue", () => {
     render(

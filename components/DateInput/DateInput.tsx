@@ -40,7 +40,7 @@ const DateInput = ({
     ) {
       if (field.value === previousFieldValue) {
         setPreviousFieldValue(selected.ISOValue);
-        field.onChange(selected.ISOValue);
+        field.onChange({ target: { name, value: selected.ISOValue } });
       }
       if (selected.ISOValue === previousFieldValue) {
         setPreviousFieldValue(field.value);
@@ -55,6 +55,25 @@ const DateInput = ({
       }
     }
   }, [selected.ISOValue, field.value]);
+  const changeDateToDay = (day: {
+    year: number;
+    month: number;
+    day: number;
+  }) => {
+    const date = new Date(day.year, day.month, day.day);
+    setPreviousFieldValue(`${day.year}-${day.month + 1}-${day.day}`);
+    field.onChange({
+      target: {
+        name,
+        value: `${day.year}-${`${day.month + 1}`.padStart(
+          2,
+          "0"
+        )}-${`${day.day}`.padStart(2, "0")}`
+      }
+    });
+    setDate(date);
+    setIsOpen(false);
+  };
   return (
     <div
       data-testid="wrapper"
@@ -201,9 +220,9 @@ const DateInput = ({
                   {week.map((day: any, index: number) => (
                     <td
                       key={index}
+                      data-testid="clickable-day"
                       onClick={() => {
-                        setDate(new Date(day.year, day.month, day.day));
-                        setIsOpen(false);
+                        changeDateToDay(day);
                       }}
                       aria-selected={
                         selected.year === day.year &&
